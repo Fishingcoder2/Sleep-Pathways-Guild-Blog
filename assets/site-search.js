@@ -11,6 +11,10 @@
   resourceStyle.rel='stylesheet';
   resourceStyle.href='/assets/resource-enhancements.css';
   document.head.appendChild(resourceStyle);
+  const goldStyle=document.createElement('link');
+  goldStyle.rel='stylesheet';
+  goldStyle.href='/assets/guild-gold-accent.css';
+  document.head.appendChild(goldStyle);
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
