@@ -63,4 +63,9 @@ footer{border-top:1px solid rgba(110,212,204,.16)!important;background:#071c29!i
 .post-content .spg-card a.spg-btn,.post-content .spg-tool a.spg-btn{color:#fff!important;-webkit-text-fill-color:#fff!important}
 .post-content .spg-card a.spg-btn.secondary,.post-content .spg-tool a.spg-btn.secondary{color:#075f62!important;-webkit-text-fill-color:#075f62!important}
 
+/* Automatic contrast correction for legacy dark custom panels */
+.post-content .spg-dark-surface,.post-content .spg-dark-surface :where(h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,figcaption,blockquote){color:#fff!important;-webkit-text-fill-color:#fff!important;opacity:1!important;text-shadow:none!important}
+.post-content .spg-dark-surface a{color:#d9f5ff!important;-webkit-text-fill-color:#d9f5ff!important;text-decoration-color:#d9f5ff!important}
+.post-content .spg-dark-surface blockquote{background:rgba(255,255,255,.1)!important;border-left-color:#6ed4cc!important}
+
 @media(max-width:760px){.card:before{width:3px}.post-shell{border-top-width:3px!important}.topic-nav a{background:rgba(255,255,255,.04)}.post-content{font-size:1rem!important;line-height:1.7!important}}
