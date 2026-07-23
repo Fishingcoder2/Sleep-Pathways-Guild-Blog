@@ -1,0 +1,46 @@
+name: Install migrated blog
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/install-blog.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Unpack approved blog package
+        run: |
+          test -f spg-blog-site.zip
+          unzip -o spg-blog-site.zip
+          rm -f spg-blog-site.zip
+          rm -f .exmu-cfg1.data
+          rm -f .thumbcache_idx_*
+
+      - name: Verify required site files
+        run: |
+          test -f index.html
+          test -f CNAME
+          test -f .nojekyll
+          test -f archive/index.html
+          test -f p/rpsgt-exam-prep-book-store.html
+          test -f 2026/07/low-flow-vs-high-flow-oxygen.html
+
+      - name: Commit installed site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Install complete migrated blog and remove upload artifacts"
+            git push
+          fi
