@@ -1,4 +1,8 @@
 (() => {
+  const modernStyle=document.createElement('link');
+  modernStyle.rel='stylesheet';
+  modernStyle.href='/assets/search-modern.css';
+  document.head.appendChild(modernStyle);
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
