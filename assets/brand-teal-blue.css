@@ -1,0 +1,33 @@
+/* Sleep Pathways Guild teal + blue visual system */
+:root{--guild-navy:#07131f;--guild-navy-2:#0b2132;--guild-blue:#1d5f91;--guild-blue-2:#2d7fb6;--guild-teal:#0f766e;--guild-teal-2:#14a49a;--guild-aqua:#6ed4cc;--guild-mist:#eaf8f6;--guild-sky:#eef7fd;--guild-gold:#d5a62e}
+body{background:radial-gradient(circle at 8% 0,rgba(20,164,154,.2),transparent 30rem),radial-gradient(circle at 95% 2%,rgba(45,127,182,.17),transparent 30rem),linear-gradient(180deg,var(--guild-navy),var(--guild-navy-2))!important}
+.top{background:linear-gradient(90deg,rgba(5,19,31,.97),rgba(7,35,52,.95))!important;border-bottom-color:rgba(110,212,204,.2)!important}
+.brand strong{background:linear-gradient(90deg,#fff,#b8f0eb);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.site-nav a.active{background:linear-gradient(135deg,rgba(29,95,145,.32),rgba(15,118,110,.34))!important;border:1px solid rgba(110,212,204,.24)!important}
+.topic-nav{background:linear-gradient(90deg,rgba(8,31,47,.94),rgba(10,45,58,.9))!important}
+.topic-nav a{border-color:rgba(110,212,204,.2)!important}
+.topic-nav a:hover,.topic-nav a:focus{background:linear-gradient(135deg,rgba(29,95,145,.28),rgba(15,118,110,.3))!important;color:#fff!important}
+.hero h1,.post-title{background:linear-gradient(90deg,#fff 0%,#c8f4ef 46%,#b7dbf5 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,.055))!important}
+.card:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,var(--guild-blue-2),var(--guild-teal-2));opacity:.9}
+.card:hover{border-color:rgba(110,212,204,.5)!important}
+.read,.nav-action,.spg-btn:not(.secondary){background:linear-gradient(135deg,var(--guild-blue),var(--guild-teal-2))!important}
+.read:hover,.nav-action:hover,.spg-btn:not(.secondary):hover{background:linear-gradient(135deg,var(--guild-blue-2),var(--guild-teal))!important}
+.search-launch button{background:linear-gradient(135deg,rgba(29,95,145,.28),rgba(15,118,110,.28))!important;border-color:rgba(110,212,204,.3)!important}
+.search-launch button:hover{background:linear-gradient(135deg,rgba(29,95,145,.42),rgba(15,118,110,.42))!important}
+.post-shell{border-top:4px solid transparent!important;border-image:linear-gradient(90deg,var(--guild-blue-2),var(--guild-teal-2)) 1!important}
+.post-content h2{border-bottom-color:#cce9e6!important}
+.post-content h2:before{content:"";display:inline-block;width:.52em;height:.52em;margin-right:.45em;border-radius:50%;background:linear-gradient(135deg,var(--guild-blue-2),var(--guild-teal-2));vertical-align:.08em}
+.post-content h3{color:#0f6570!important}
+.post-content blockquote{border-left-color:var(--guild-teal-2)!important;background:linear-gradient(135deg,var(--guild-mist),var(--guild-sky))!important}
+.post-content a{color:#176b9c!important}
+.notice{border-color:rgba(110,212,204,.38)!important;background:linear-gradient(135deg,rgba(29,95,145,.14),rgba(15,118,110,.16))!important;color:#edfdfb!important}
+.meta,.tags{color:#b8d8e7!important}
+.search-panel{border-top:6px solid transparent!important;border-image:linear-gradient(90deg,var(--guild-blue-2),var(--guild-teal-2)) 1!important}
+.search-input:focus{border-color:var(--guild-teal-2)!important}
+.search-category{color:var(--guild-teal)!important;background:linear-gradient(135deg,var(--guild-mist),var(--guild-sky))!important}
+.search-result:hover{border-color:#83cec7!important}
+.spg-hero{background:radial-gradient(circle at 10% 10%,rgba(20,164,154,.2),transparent 30%),radial-gradient(circle at 90% 10%,rgba(45,127,182,.18),transparent 35%),linear-gradient(135deg,#f4fffd,#eef7fd)!important}
+.spg-card.featured{border-top-color:var(--guild-teal-2)!important}.spg-card.companion{border-top-color:var(--guild-blue-2)!important}.spg-card.official{border-left-color:var(--guild-blue-2)!important}
+footer{border-top:1px solid rgba(110,212,204,.16)!important;background:linear-gradient(90deg,rgba(4,15,25,.35),rgba(7,34,47,.34))!important}
+@media(max-width:760px){.card:before{width:3px}.post-shell{border-top-width:3px!important}.topic-nav a{background:rgba(255,255,255,.035)}}
