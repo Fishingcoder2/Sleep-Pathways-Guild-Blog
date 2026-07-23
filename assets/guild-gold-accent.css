@@ -1,0 +1,130 @@
+/* Sleep Pathways Guild gold navigation and framing system */
+:root{
+  --guild-gold:#d5a62e;
+  --guild-gold-bright:#f2c75c;
+  --guild-gold-deep:#9b6d12;
+  --guild-gold-soft:#fff4cf;
+  --guild-gold-ink:#241a08;
+  --guild-gold-ring:rgba(242,199,92,.38);
+}
+
+/* Brand and navigation */
+.brand strong{
+  color:var(--guild-gold-bright)!important;
+  -webkit-text-fill-color:var(--guild-gold-bright)!important;
+  text-shadow:0 1px 0 rgba(0,0,0,.35),0 0 22px rgba(213,166,46,.16)!important;
+}
+.top{border-bottom:2px solid rgba(213,166,46,.72)!important}
+.site-nav a.active{
+  background:linear-gradient(180deg,#f2c75c,#d5a62e)!important;
+  color:var(--guild-gold-ink)!important;
+  border-color:#f6d77d!important;
+  box-shadow:0 7px 18px rgba(213,166,46,.2)!important;
+}
+.topic-nav{border-bottom:1px solid rgba(213,166,46,.4)!important}
+.topic-nav a:hover,.topic-nav a:focus-visible{
+  background:rgba(213,166,46,.15)!important;
+  border-color:rgba(242,199,92,.75)!important;
+  color:#fff9e8!important;
+}
+
+/* Gold guild frames */
+.card,.post-shell,.post-content,.search-panel,.spg-hero,.spg-card,.spg-tool,.official-resource-card{
+  border-color:rgba(213,166,46,.52)!important;
+}
+.card:before{
+  width:5px!important;
+  background:linear-gradient(180deg,var(--guild-gold-bright),var(--guild-gold-deep))!important;
+  opacity:1!important;
+}
+.card:hover,.spg-card:hover,.spg-tool:hover,.official-resource-card:hover{
+  border-color:rgba(242,199,92,.9)!important;
+  box-shadow:0 24px 55px rgba(0,0,0,.22),0 0 0 1px rgba(213,166,46,.12)!important;
+}
+.post-shell{
+  border-top:5px solid var(--guild-gold)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.24),0 0 0 1px rgba(213,166,46,.13)!important;
+}
+.post-content{
+  box-shadow:inset 0 1px 0 #fff,0 12px 40px rgba(0,0,0,.13),0 0 0 1px rgba(213,166,46,.12)!important;
+}
+.post-content h2{border-bottom-color:rgba(213,166,46,.42)!important}
+.post-content h2:before{
+  background:var(--guild-gold)!important;
+  box-shadow:0 0 0 4px rgba(213,166,46,.13)!important;
+}
+.post-content blockquote{
+  border-left-color:var(--guild-gold)!important;
+  background:linear-gradient(90deg,#fff8df,#f4fbfb)!important;
+}
+.post-content img{outline:1px solid rgba(213,166,46,.35);outline-offset:3px}
+.search-panel{border-top:7px solid var(--guild-gold)!important}
+.spg-hero{box-shadow:0 20px 50px rgba(16,52,58,.15),0 0 0 1px rgba(213,166,46,.2)!important}
+.spg-card.featured,.spg-card.companion{border-top-color:var(--guild-gold)!important}
+.spg-card.official{border-left-color:var(--guild-gold)!important}
+.notice,.spg-warning{
+  border-color:rgba(213,166,46,.62)!important;
+  background:linear-gradient(180deg,#fff9e6,#fff3c9)!important;
+}
+
+/* Primary gold calls to action */
+.read,.nav-action,.spg-btn:not(.secondary),.search-launch button,.official-resource-card a{
+  background:linear-gradient(180deg,var(--guild-gold-bright),var(--guild-gold))!important;
+  color:var(--guild-gold-ink)!important;
+  -webkit-text-fill-color:var(--guild-gold-ink)!important;
+  border:1px solid #f7d878!important;
+  text-shadow:none!important;
+  box-shadow:0 10px 24px rgba(155,109,18,.24),inset 0 1px 0 rgba(255,255,255,.45)!important;
+  font-weight:850!important;
+}
+.read:hover,.nav-action:hover,.spg-btn:not(.secondary):hover,.search-launch button:hover,.official-resource-card a:hover{
+  background:linear-gradient(180deg,#f7d878,#dfae32)!important;
+  color:#1d1608!important;
+  -webkit-text-fill-color:#1d1608!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 14px 30px rgba(155,109,18,.32),inset 0 1px 0 rgba(255,255,255,.5)!important;
+}
+.spg-btn.secondary{
+  background:#fff!important;
+  color:#78540d!important;
+  -webkit-text-fill-color:#78540d!important;
+  border:2px solid var(--guild-gold)!important;
+  box-shadow:0 7px 18px rgba(155,109,18,.1)!important;
+}
+.spg-btn.secondary:hover{background:var(--guild-gold-soft)!important;color:#5d410a!important}
+
+/* Clear keyboard and touch focus */
+:where(a,button,input,select,textarea):focus-visible{
+  outline:4px solid var(--guild-gold-bright)!important;
+  outline-offset:3px!important;
+  box-shadow:0 0 0 7px var(--guild-gold-ring)!important;
+}
+.search-input:focus{
+  border-color:var(--guild-gold)!important;
+  box-shadow:0 0 0 5px var(--guild-gold-ring),0 14px 35px rgba(16,52,58,.12)!important;
+}
+.search-chips button:hover,.search-chips button:focus-visible{
+  background:var(--guild-gold-soft)!important;
+  border-color:var(--guild-gold)!important;
+  color:#5d410a!important;
+}
+.search-category,.resource-label{
+  background:var(--guild-gold-soft)!important;
+  color:#68490b!important;
+  border-color:rgba(213,166,46,.5)!important;
+}
+
+/* Gold path details without reducing readability */
+.meta a,.tags a{color:#ffe59b!important}
+footer{border-top:2px solid rgba(213,166,46,.58)!important}
+footer a{color:#ffe59b!important}
+
+@media(max-width:760px){
+  .card:before{width:4px!important}
+  .post-shell{border-top-width:4px!important}
+  .read,.nav-action,.spg-btn:not(.secondary),.search-launch button{min-height:48px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .read,.nav-action,.spg-btn,.search-launch button{transform:none!important}
+}
