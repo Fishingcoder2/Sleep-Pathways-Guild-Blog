@@ -42,4 +42,7 @@
       if(heroActions){const link=document.createElement('a');link.className='spg-btn secondary';link.href='#official-study-resources';link.textContent='Official Study Resources';heroActions.appendChild(link)}
     }
   }
+  function luminance(rgb){const [r,g,b]=rgb.map(v=>v/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*r+.7152*g+.0722*b}
+  function colorsFrom(style){const text=`${style.backgroundColor} ${style.backgroundImage}`;return [...text.matchAll(/rgba?\((\d+),\s*(\d+),\s*(\d+)/g)].map(m=>[+m[1],+m[2],+m[3]])}
+  $$('.post-content div,.post-content section,.post-content aside,.post-content article').forEach(el=>{const style=getComputedStyle(el);const colors=colorsFrom(style);if(!colors.length)return;const avg=colors.reduce((sum,c)=>sum+luminance(c),0)/colors.length;if(avg<.18)el.classList.add('spg-dark-surface')});
 })();
