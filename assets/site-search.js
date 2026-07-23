@@ -1,5 +1,5 @@
 (() => {
-  const ASSET_VERSION='20260723-contrast4';
+  const ASSET_VERSION='20260723-contrast5';
   function addStylesheet(path){
     const link=document.createElement('link');
     link.rel='stylesheet';
@@ -63,6 +63,14 @@
     return rgb.concat(hex);
   }
 
+  const lightComponentSelector=[
+    '.spg-badge','.spg-task','.spg-tag','.resource-label','.search-category',
+    '.spg-card','.spg-mini','.spg-warning','.spg-green','.spg-question',
+    '.spg-answer','details','.spg-checklist label','.spg-footer','.spg-notice',
+    '.official-resource-card'
+  ].join(',');
+  const readableTextSelector='h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,label,summary,figcaption';
+
   function detectDarkSurfaces(){
     $$('.post-content div,.post-content section,.post-content aside,.post-content article').forEach(el=>{
       el.classList.remove('spg-dark-surface');
@@ -73,25 +81,24 @@
     });
   }
 
-  function applyFinalContrast(){
-    const lightSelector=[
-      '.post-content .spg-badge',
-      '.post-content .spg-task',
-      '.post-content .spg-tag',
-      '.post-content .resource-label',
-      '.post-content .spg-card',
-      '.post-content .spg-mini',
-      '.post-content .spg-warning',
-      '.post-content .spg-green',
-      '.post-content .spg-question',
-      '.post-content .spg-answer',
-      '.post-content details',
-      '.post-content .spg-checklist label',
-      '.post-content .spg-footer',
-      '.post-content .spg-notice',
-      '.post-content .official-resource-card'
-    ].join(',');
-    $$(lightSelector).forEach(el=>{
+  function applyDarkContrast(){
+    $$('.post-content .spg-dark-surface').forEach(surface=>{
+      surface.style.setProperty('color','#ffffff','important');
+      surface.style.setProperty('-webkit-text-fill-color','#ffffff','important');
+      surface.querySelectorAll(readableTextSelector).forEach(node=>{
+        const lightParent=node.closest(lightComponentSelector);
+        if(lightParent && surface.contains(lightParent))return;
+        if(node.closest('.spg-btn,.spg-button,.spg-button-blue,.read,.nav-action,button,[role="button"]'))return;
+        node.style.setProperty('color','#ffffff','important');
+        node.style.setProperty('-webkit-text-fill-color','#ffffff','important');
+        node.style.setProperty('opacity','1','important');
+        node.style.setProperty('text-shadow','none','important');
+      });
+    });
+  }
+
+  function applyLightContrast(){
+    $$('.post-content '+lightComponentSelector.split(',').join(',.post-content ')).forEach(el=>{
       const colors=colorsFrom(getComputedStyle(el));
       if(!colors.length)return;
       const avg=colors.reduce((sum,c)=>sum+luminance(c),0)/colors.length;
@@ -100,7 +107,7 @@
       el.style.setProperty('-webkit-text-fill-color','#17324c','important');
       el.style.setProperty('opacity','1','important');
       el.style.setProperty('text-shadow','none','important');
-      el.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,label,summary,figcaption').forEach(node=>{
+      el.querySelectorAll(readableTextSelector).forEach(node=>{
         if(node.closest('.spg-btn,.spg-button,.spg-button-blue,.read,.nav-action,button,[role="button"]'))return;
         node.style.setProperty('color','#17324c','important');
         node.style.setProperty('-webkit-text-fill-color','#17324c','important');
@@ -112,16 +119,14 @@
         link.style.setProperty('-webkit-text-fill-color','#075f91','important');
       });
     });
-    document.documentElement.dataset.spgContrast='contrast4';
   }
 
-  function refreshContrast(){detectDarkSurfaces();applyFinalContrast()}
+  function refreshContrast(){detectDarkSurfaces();applyDarkContrast();applyLightContrast()}
   refreshContrast();
   requestAnimationFrame(refreshContrast);
   setTimeout(refreshContrast,250);
   setTimeout(refreshContrast,1000);
   const postContent=$('.post-content');
-  if(postContent){
-    new MutationObserver(refreshContrast).observe(postContent,{childList:true,subtree:true});
-  }
+  if(postContent){new MutationObserver(refreshContrast).observe(postContent,{childList:true,subtree:true})}
+  document.documentElement.dataset.spgContrast='contrast5';
 })();
