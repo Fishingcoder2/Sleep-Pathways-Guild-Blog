@@ -7,6 +7,10 @@
   brandStyle.rel='stylesheet';
   brandStyle.href='/assets/brand-teal-blue.css';
   document.head.appendChild(brandStyle);
+  const resourceStyle=document.createElement('link');
+  resourceStyle.rel='stylesheet';
+  resourceStyle.href='/assets/resource-enhancements.css';
+  document.head.appendChild(resourceStyle);
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -26,4 +30,16 @@
   $$('.js-search').forEach(b=>b.addEventListener('click',()=>openSearch()));
   const menuBtn=$('.menu-toggle'), nav=$('.site-nav'); if(menuBtn&&nav)menuBtn.addEventListener('click',()=>{const on=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(on))});
   const path=location.pathname; $$('.site-nav a').forEach(a=>{const href=a.getAttribute('href'); if(href==='/'?path==='/':href&&path.startsWith(href))a.classList.add('active')});
+  if(path==='/p/rpsgt-exam-prep-book-store.html'){
+    const studyTools=$('#study-tools');
+    if(studyTools && !$('#official-study-resources')){
+      const section=document.createElement('section');
+      section.id='official-study-resources';
+      section.className='official-study-resources';
+      section.innerHTML=`<h2>Official Study Resources</h2><p class="resource-intro">Use these official professional and credentialing resources to verify current clinical guidance, technical procedures, exam eligibility, and exam content.</p><div class="official-resource-grid"><article class="official-resource-card"><span class="resource-label">AASM</span><h3>AASM Practice Guidelines</h3><p>Current clinical practice guidelines and guidance statements for the diagnosis, treatment, and long-term management of sleep disorders.</p><a href="https://aasm.org/clinical-resources/practice-standards/practice-guidelines/" target="_blank" rel="noopener">Open AASM Guidelines</a></article><article class="official-resource-card"><span class="resource-label">AAST</span><h3>AAST Technical Guidelines</h3><p>Professional technical guidance for sleep technologists, including standard polysomnography, PAP titration, HSAT, CO₂ monitoring, and related procedures.</p><a href="https://aastweb.org/clinical-resources/technical-guidelines/" target="_blank" rel="noopener">Open AAST Guidelines</a></article><article class="official-resource-card"><span class="resource-label">BRPT</span><h3>RPSGT Candidate Handbook</h3><p>Official eligibility pathways, application procedures, examination policies, scoring information, and candidate requirements.</p><a href="https://brpt.org/rpsgt/rpsgt-handbook-2/" target="_blank" rel="noopener">Open RPSGT Handbook</a></article><article class="official-resource-card"><span class="resource-label">BRPT</span><h3>RPSGT Exam Blueprint</h3><p>The official domains, tasks, knowledge areas, and exam structure used for the current RPSGT examination.</p><a href="https://brpt.org/rpsgt/exam-blueprint/" target="_blank" rel="noopener">Open Exam Blueprint</a></article></div>`;
+      studyTools.parentNode.insertBefore(section,studyTools);
+      const heroActions=$('.spg-hero-actions');
+      if(heroActions){const link=document.createElement('a');link.className='spg-btn secondary';link.href='#official-study-resources';link.textContent='Official Study Resources';heroActions.appendChild(link)}
+    }
+  }
 })();
