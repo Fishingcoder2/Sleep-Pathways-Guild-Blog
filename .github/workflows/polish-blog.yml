@@ -1,0 +1,59 @@
+name: Polish blog and normalize Amazon affiliate links
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/polish-blog.yml'
+permissions:
+  contents: write
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update pages
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          from urllib.parse import quote_plus
+
+          root = Path('.')
+          css_link = '<link rel="stylesheet" href="/assets/site.css">'
+          changed = []
+
+          for path in root.rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              original = text
+              if css_link not in text:
+                  text = text.replace('</head>', css_link + '</head>', 1)
+              # Normalize any explicit Amazon tag in all HTML files.
+              text = re.sub(r'([?&]tag=)[^&"\']+', r'\1spg_rpsgt-20', text)
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(str(path))
+
+          store = Path('p/rpsgt-exam-prep-book-store.html')
+          text = store.read_text(encoding='utf-8')
+          replacements = {
+              'https://amzn.to/4p11w5b': 'https://www.amazon.com/s?k=' + quote_plus('Fundamentals of Sleep Technology') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/3QO1tgs': 'https://www.amazon.com/s?k=' + quote_plus('Polysomnography for the Sleep Technologist') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/4yiYRbp': 'https://www.amazon.com/s?k=' + quote_plus('Sleep Medicine Pearls') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/4bp1wWT': 'https://www.amazon.com/s?k=' + quote_plus('Pediatric Sleep Medicine Pearls') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/4fgpKVC': 'https://www.amazon.com/s?k=' + quote_plus('A Clinical Guide to Pediatric Sleep') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/4v5eWOP': 'https://www.amazon.com/s?k=' + quote_plus('RPSGT Scoring Mastery') + '&tag=spg_rpsgt-20',
+              'https://amzn.to/4eFBXTE': 'https://www.amazon.com/s?k=' + quote_plus('Fundamentals for Sleep Professionals') + '&tag=spg_rpsgt-20',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          text = text.replace('Amazon Associate tracking is already built into amzn.to short links below.', 'Amazon links below use the Sleep Pathways Guild tracking ID spg_rpsgt-20.')
+          store.write_text(text, encoding='utf-8')
+
+          print(f'Updated {len(changed)} HTML pages and normalized the bookstore links.')
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Polish blog design and verify Amazon affiliate tracking" || exit 0
+          git push
