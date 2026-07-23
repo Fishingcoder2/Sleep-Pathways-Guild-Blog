@@ -1,0 +1,99 @@
+/* Accessibility and official-resource enhancements */
+.spg-btn:not(.secondary):not(.gold),
+.read,
+.nav-action,
+.search-launch button{
+  color:#fff !important;
+  text-shadow:none !important;
+}
+.spg-btn:not(.secondary):not(.gold):hover,
+.spg-btn:not(.secondary):not(.gold):focus,
+.read:hover,.read:focus,
+.nav-action:hover,.nav-action:focus{
+  color:#fff !important;
+}
+.spg-btn.secondary{
+  color:#075f58 !important;
+  background:#fff !important;
+  border-color:#9dcfc9 !important;
+}
+.official-study-resources{
+  margin-top:32px;
+  padding:clamp(20px,3vw,30px);
+  border-radius:24px;
+  background:linear-gradient(145deg,#edf9f7 0%,#eef6fd 100%);
+  border:1px solid #bddedb;
+  box-shadow:0 18px 42px rgba(16,52,58,.10);
+}
+.official-study-resources h2{
+  margin:0 0 8px;
+  color:#0d3e44;
+  font-size:clamp(1.55rem,3vw,2.15rem);
+}
+.official-study-resources>.resource-intro{
+  margin:0 0 20px;
+  color:#4d6471;
+  max-width:760px;
+}
+.official-resource-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+.official-resource-card{
+  display:flex;
+  flex-direction:column;
+  padding:19px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid #d1e4e8;
+  box-shadow:0 8px 24px rgba(18,58,68,.07);
+}
+.official-resource-card .resource-label{
+  display:inline-flex;
+  align-self:flex-start;
+  margin-bottom:9px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#e5f6f3;
+  color:#075f58;
+  font-size:.75rem;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.official-resource-card h3{
+  margin:0 0 8px;
+  color:#123c52;
+  font-size:1.08rem;
+}
+.official-resource-card p{
+  margin:0 0 16px;
+  color:#536a76;
+  line-height:1.55;
+  font-size:.93rem;
+}
+.official-resource-card a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:auto;
+  min-height:46px;
+  padding:11px 14px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#1d5f91,#0f766e);
+  color:#fff !important;
+  font-weight:800;
+  text-decoration:none !important;
+  box-shadow:0 9px 22px rgba(15,91,110,.18);
+}
+.official-resource-card a:hover,
+.official-resource-card a:focus{
+  color:#fff !important;
+  transform:translateY(-1px);
+  box-shadow:0 13px 26px rgba(15,91,110,.24);
+}
+@media(max-width:700px){
+  .official-resource-grid{grid-template-columns:1fr}
+  .official-study-resources{padding:18px}
+}
