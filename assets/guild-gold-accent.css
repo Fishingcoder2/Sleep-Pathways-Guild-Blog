@@ -127,14 +127,14 @@ footer a{color:#ffe59b!important}
   text-shadow:none!important;
   opacity:1!important;
 }
-.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer),
-.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer) :where(h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,label,summary,figcaption){
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer,.spg-notice,.official-resource-card),
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer,.spg-notice,.official-resource-card) :where(h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,label,summary,figcaption){
   color:#1b3342!important;
   -webkit-text-fill-color:#1b3342!important;
   text-shadow:none!important;
   opacity:1!important;
 }
-.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer) a{
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer,.spg-notice,.official-resource-card) a:not(.spg-btn):not(.spg-button):not(.spg-button-blue){
   color:#075f91!important;
   -webkit-text-fill-color:#075f91!important;
 }
