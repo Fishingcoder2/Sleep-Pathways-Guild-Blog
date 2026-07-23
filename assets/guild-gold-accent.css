@@ -119,6 +119,26 @@
 footer{border-top:2px solid rgba(213,166,46,.58)!important}
 footer a{color:#ffe59b!important}
 
+/* Light components nested inside dark article panels must keep dark text */
+.post-content .spg-dark-surface :where(.spg-badge,.spg-task,.spg-tag,.resource-label,.search-category),
+.post-content .spg-dark-surface :where(.spg-badge,.spg-task,.spg-tag,.resource-label,.search-category) *{
+  color:#17324c!important;
+  -webkit-text-fill-color:#17324c!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer),
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer) :where(h1,h2,h3,h4,h5,h6,p,li,span,strong,b,em,i,small,label,summary,figcaption){
+  color:#1b3342!important;
+  -webkit-text-fill-color:#1b3342!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+.post-content .spg-dark-surface :where(.spg-card,.spg-mini,.spg-warning,.spg-green,.spg-question,.spg-answer,details,.spg-checklist label,.spg-footer) a{
+  color:#075f91!important;
+  -webkit-text-fill-color:#075f91!important;
+}
+
 @media(max-width:760px){
   .card:before{width:4px!important}
   .post-shell{border-top-width:4px!important}
