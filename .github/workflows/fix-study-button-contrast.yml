@@ -1,0 +1,99 @@
+name: Fix study button contrast
+
+on:
+  push:
+    paths:
+      - .github/workflows/fix-study-button-contrast.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Enforce readable study buttons
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          article = Path('2026/07/rpsgt-review-test-previous-posts-sleep.html')
+          text = article.read_text(encoding='utf-8')
+          marker = '</style><div class="spg-post">'
+          override = '''
+
+  /* Direct accessibility safeguard for dark download buttons */
+  .spg-post a.spg-button,
+  .spg-post a.spg-button:visited,
+  .spg-post a.spg-button:hover,
+  .spg-post a.spg-button:focus,
+  .spg-post a.spg-button:active,
+  .spg-post a.spg-button-blue,
+  .spg-post a.spg-button-blue:visited,
+  .spg-post a.spg-button-blue:hover,
+  .spg-post a.spg-button-blue:focus,
+  .spg-post a.spg-button-blue:active {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+  }
+  .spg-post a.spg-button { background: #0f766e !important; }
+  .spg-post a.spg-button-blue { background: #061a3a !important; }
+'''
+          if 'Direct accessibility safeguard for dark download buttons' not in text:
+              text = text.replace(marker, override + marker, 1)
+              article.write_text(text, encoding='utf-8')
+
+          css = Path('assets/site.css')
+          css_text = css.read_text(encoding='utf-8')
+          shared = '''
+
+/* Accessible text on dark article action buttons */
+.post-content a.spg-button,
+.post-content a.spg-button:visited,
+.post-content a.spg-button:hover,
+.post-content a.spg-button:focus,
+.post-content a.spg-button:active,
+.post-content a.spg-button-blue,
+.post-content a.spg-button-blue:visited,
+.post-content a.spg-button-blue:hover,
+.post-content a.spg-button-blue:focus,
+.post-content a.spg-button-blue:active,
+.post-content a.spg-download-button,
+.post-content a.spg-download-button:visited,
+.post-content a.spg-download-button:hover,
+.post-content a.spg-download-button:focus,
+.post-content a.spg-download-button:active {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+  font-weight: 800 !important;
+}
+'''
+          if 'Accessible text on dark article action buttons' not in css_text:
+              css.write_text(css_text.rstrip() + shared + '\n', encoding='utf-8')
+
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              page = path.read_text(encoding='utf-8')
+              updated = page.replace('/assets/site.css?v=20260724-downloads1', '/assets/site.css?v=20260724-buttoncontrast2')
+              updated = updated.replace('/assets/site.css?v=20260724-buttoncontrast1', '/assets/site.css?v=20260724-buttoncontrast2')
+              if updated != page:
+                  path.write_text(updated, encoding='utf-8')
+          PY
+      - name: Commit fix and remove workflow
+        run: |
+          rm -f .github/workflows/fix-study-button-contrast.yml
+          git config user.name "Sleep Pathways Guild Automation"
+          git config user.email "admin@sleeppathsguild.com"
+          git add -A
+          git commit -m "Fix dark study button text contrast"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
