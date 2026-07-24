@@ -97,3 +97,5 @@ jobs:
           git add -A
           git commit -m "Fix dark study button text contrast"
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+# retriggered after initial workflow creation
