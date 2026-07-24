@@ -1,0 +1,178 @@
+name: Replace Google Drive download links
+
+on:
+  push:
+    paths:
+      - .github/workflows/rewrite-download-links.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rewrite:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace Drive URLs and improve answer contrast
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import html
+          import re
+
+          replacements = {
+              '1rx9KGTGvdT6vSff0qcjE2w4B_mF-EV3s': {
+                  'view': '/downloads/visuals/coach-bob-brain-waves-and-sleep-staging.jpg',
+                  'thumb': '/downloads/visuals/coach-bob-brain-waves-and-sleep-staging.jpg',
+              },
+              '1MD2jJEdFXGpvjxBr6frtArPbCvXtcdvg': {
+                  'view': '/downloads/visuals/coach-bob-stage-n2-sleep.jpg',
+                  'thumb': '/downloads/visuals/coach-bob-stage-n2-sleep.jpg',
+              },
+              '1pnmxqp7HZTueqvDcP1sCaUU5fUPtDqi4': {
+                  'view': '/downloads/visuals/snore-artifact-rpsgt-practice.jpg',
+                  'thumb': '/downloads/visuals/snore-artifact-rpsgt-practice.jpg',
+              },
+              '11zOqnD-zk4eDhYKoaZVxGZlAep1xTttk': {
+                  'view': '/downloads/visuals/pap-leak-artifact-recognition.jpg',
+                  'thumb': '/downloads/visuals/pap-leak-artifact-recognition.jpg',
+              },
+              '1Od6gbtGcOsSw4XuG6sos54UGXvS1o4KO': {
+                  'view': '/downloads/visuals/uppp-mallampati-airway-treatment-guide.jpg',
+                  'thumb': '/downloads/visuals/uppp-mallampati-airway-treatment-guide.jpg',
+              },
+              '1AcPpBB4QJnc3RJ9D5QyJqHtow_s51sW4': {
+                  'view': '/downloads/visuals/cpap-titration-decision-tree.jpg',
+                  'thumb': '/downloads/visuals/cpap-titration-decision-tree.jpg',
+              },
+              '1EOSneLsj0SNHp05g8fK5PxC6dEjO4NLR': {
+                  'view': '/downloads/visuals/respiratory-events-rera-uars-pediatric-apnea.jpg',
+                  'thumb': '/downloads/visuals/respiratory-events-rera-uars-pediatric-apnea.jpg',
+              },
+              '1tO-EY5P3Uz-kDTc-F9IKBiUfG-V5fU4v': {
+                  'view': '/downloads/pdfs/ekg-artifact-recognition-lab.pdf',
+                  'thumb': '/downloads/visuals/ekg-artifact-recognition-lab.jpg',
+              },
+              '1KA58F-_GsDP1ORmCOOLzJY9YxFPVNDKX': {
+                  'view': '/downloads/pdfs/rpsgt-one-hour-a-day-readiness-tracker.pdf',
+                  'thumb': '/downloads/visuals/rpsgt-readiness-tracker-cover.jpg',
+              },
+          }
+
+          changed = []
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              original = text
+              for file_id, targets in replacements.items():
+                  text = re.sub(
+                      rf'https://drive\.google\.com/file/d/{re.escape(file_id)}/view\?[^\"\'<>\s]*',
+                      targets['view'],
+                      text,
+                  )
+                  text = re.sub(
+                      rf'https://drive\.google\.com/thumbnail\?id={re.escape(file_id)}(?:&amp;|&)sz=w\d+',
+                      targets['thumb'],
+                      text,
+                  )
+
+              text = text.replace(
+                  '<strong>Image troubleshooting note:</strong> If the image still does not display in Blogger, upload the N2 image directly into the Blogger post, then replace the image URL in this section with Blogger’s hosted image URL.',
+                  '<strong>Hosted by Sleep Pathways Guild™:</strong> This visual now opens directly from the blog domain without a Google Drive handoff.'
+              )
+              text = text.replace(
+                  'If the image does not appear, open the download button. Google Drive images must be shared as “Anyone with the link can view.”',
+                  'This visual is now hosted directly by Sleep Pathways Guild™ for a simpler, safer download experience.'
+              )
+
+              if text != original:
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(str(path))
+
+          css_path = Path('assets/site.css')
+          css = css_path.read_text(encoding='utf-8')
+          marker = '/* SPG reveal-answer contrast v1 */'
+          if marker not in css:
+              css += '''\n\n/* SPG reveal-answer contrast v1 */
+          .post-content details>summary,
+          .post-content details.spg-reveal>summary{
+            background:#0b243a!important;
+            color:#fff!important;
+            -webkit-text-fill-color:#fff!important;
+            opacity:1!important;
+            text-shadow:none!important;
+            border-radius:10px;
+          }
+          .post-content details[open]>summary,
+          .post-content details.spg-reveal[open]>summary{
+            background:#0f766e!important;
+            color:#fff!important;
+            -webkit-text-fill-color:#fff!important;
+          }
+          .post-content .spg-scenario-header,
+          .post-content .spg-scenario-header h1,
+          .post-content .spg-scenario-header h2,
+          .post-content .spg-scenario-header h3,
+          .post-content .spg-scenario-header p,
+          .post-content .spg-scenario-header span,
+          .post-content .spg-scenario-header div{
+            color:#fff!important;
+            -webkit-text-fill-color:#fff!important;
+            opacity:1!important;
+            text-shadow:none!important;
+          }
+          '''
+              css_path.write_text(css, encoding='utf-8')
+              changed.append(str(css_path))
+
+          cards = [
+              ('Coach Bob Brain Waves and Sleep Staging', '/downloads/visuals/coach-bob-brain-waves-and-sleep-staging.jpg', 'Visual'),
+              ('Coach Bob Stage N2 Sleep', '/downloads/visuals/coach-bob-stage-n2-sleep.jpg', 'Visual'),
+              ('Snore Artifact RPSGT Practice', '/downloads/visuals/snore-artifact-rpsgt-practice.jpg', 'Visual'),
+              ('PAP Leak Artifact Recognition', '/downloads/visuals/pap-leak-artifact-recognition.jpg', 'Visual'),
+              ('UPPP, Mallampati, and Airway Treatment Guide', '/downloads/visuals/uppp-mallampati-airway-treatment-guide.jpg', 'Visual'),
+              ('CPAP Titration Decision Tree', '/downloads/visuals/cpap-titration-decision-tree.jpg', 'Visual'),
+              ('Respiratory Events, RERA, UARS, and Pediatric Apnea', '/downloads/visuals/respiratory-events-rera-uars-pediatric-apnea.jpg', 'Visual'),
+              ('EKG Artifact Recognition Lab', '/downloads/pdfs/ekg-artifact-recognition-lab.pdf', 'PDF'),
+              ('RPSGT One-Hour-a-Day Readiness Tracker', '/downloads/pdfs/rpsgt-one-hour-a-day-readiness-tracker.pdf', 'PDF'),
+          ]
+          card_html = ''.join(
+              f'<article class="resource"><span>{html.escape(kind)}</span><h2>{html.escape(title)}</h2><a href="{href}" target="_blank" rel="noopener">Open resource</a></article>'
+              for title, href, kind in cards
+          )
+          index = f'''<!doctype html>
+          <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>Free Study Downloads | Sleep Pathways Guild™</title>
+          <meta name="description" content="Original Sleep Pathways Guild RPSGT study visuals and printable PDF resources.">
+          <style>
+          :root{{--bg:#07111d;--bg2:#0d1d34;--ink:#f4f8ff;--muted:#c4d3e8;--line:rgba(255,255,255,.14);--gold:#c89a32;--teal:#2fb7b0;--blue:#1f6fbf}}
+          *{{box-sizing:border-box}}body{{margin:0;min-height:100vh;background:linear-gradient(180deg,var(--bg),var(--bg2));color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}}
+          .wrap{{width:min(calc(100% - 32px),1100px);margin:auto}}header{{padding:36px 0 20px}}h1{{font:700 clamp(2.2rem,6vw,4.6rem)/1 Georgia,serif;margin:0 0 14px}}p{{color:var(--muted);line-height:1.65}}.grid{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:18px 0 44px}}.resource{{padding:22px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.08)}}.resource span{{display:inline-block;color:#fff3d0;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}}.resource h2{{font:700 1.25rem/1.2 Georgia,serif}}.resource a{{display:inline-flex;margin-top:10px;padding:11px 15px;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--teal));color:#fff;text-decoration:none;font-weight:800}}.notice{{padding:16px;border-left:6px solid var(--gold);border-radius:16px;background:rgba(255,248,231,.1)}}footer{{padding:24px 0 42px;color:var(--muted);border-top:1px solid var(--line)}}@media(max-width:850px){{.grid{{grid-template-columns:1fr 1fr}}}}@media(max-width:560px){{.grid{{grid-template-columns:1fr}}}}
+          </style></head><body><main class="wrap"><header><p><a href="/" style="color:#fff3d0">← Sleep Pathways Guild™ Blog</a></p><h1>Free study downloads</h1><p>Original visuals and printable tools for sleep-technology learning and RPSGT exam preparation.</p><div class="notice"><strong>Independent educational resources.</strong><p>Sleep Pathways Guild is not affiliated with, endorsed by, or sponsored by BRPT, AASM, or AAST. These materials do not guarantee a passing examination result. Verify current rules and requirements with official sources.</p></div></header><section class="grid">{card_html}</section></main><footer><div class="wrap">Copyright © 2026 Sleep Pathways Guild™. Personal, noncommercial educational use only. Do not copy, resell, scrape, or redistribute the original collection without permission.</div></footer></body></html>'''
+          index_path = Path('downloads/index.html')
+          index_path.write_text(index, encoding='utf-8')
+          changed.append(str(index_path))
+
+          print('Updated:')
+          for item in changed:
+              print(' -', item)
+          PY
+
+      - name: Commit link replacements and remove workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/rewrite-download-links.yml
+          git config user.name "Sleep Pathways Guild Automation"
+          git config user.email "admin@sleeppathsguild.com"
+          git add -A
+          git commit -m "Use same-domain study downloads and improve answer contrast"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
