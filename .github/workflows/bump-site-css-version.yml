@@ -1,0 +1,43 @@
+name: Refresh shared Blogger stylesheet
+
+on:
+  push:
+    paths:
+      - .github/workflows/bump-site-css-version.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Version shared stylesheet links
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          old = 'href="/assets/site.css"'
+          new = 'href="/assets/site.css?v=20260724-downloads1"'
+          changed = 0
+          for path in Path('.').rglob('*.html'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8')
+              updated = text.replace(old, new)
+              if updated != text:
+                  path.write_text(updated, encoding='utf-8')
+                  changed += 1
+          print(f'Updated {changed} HTML files')
+          PY
+      - name: Commit cache refresh and remove workflow
+        run: |
+          rm -f .github/workflows/bump-site-css-version.yml
+          git config user.name "Sleep Pathways Guild Automation"
+          git config user.email "admin@sleeppathsguild.com"
+          git add -A
+          git commit -m "Refresh shared Blogger stylesheet cache"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
