@@ -3,7 +3,6 @@
 @media(max-width:900px){.menu-toggle{display:block}.site-nav{display:none;position:absolute;left:0;right:0;top:calc(100% + 10px);background:#0b1a2c;border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:10px;box-shadow:0 20px 50px rgba(0,0,0,.35)}.site-nav.open{display:grid}.site-nav a,.nav-action{text-align:left;width:100%;border-radius:10px}.topin{flex-direction:row;align-items:center}.brand span{display:none}}
 @media(max-width:560px){.search-panel{padding:17px;border-radius:18px}.search-overlay{padding:12px}.topic-nav .wrap{width:calc(100% - 20px)}}
 
-
 /* SPG reveal-answer contrast v1 */
 .post-content details>summary,
 .post-content details.spg-reveal>summary{
@@ -31,4 +30,27 @@
   -webkit-text-fill-color:#fff!important;
   opacity:1!important;
   text-shadow:none!important;
+}
+
+/* Accessible text on dark article action buttons */
+.post-content a.spg-button,
+.post-content a.spg-button:visited,
+.post-content a.spg-button:hover,
+.post-content a.spg-button:focus,
+.post-content a.spg-button:active,
+.post-content a.spg-button-blue,
+.post-content a.spg-button-blue:visited,
+.post-content a.spg-button-blue:hover,
+.post-content a.spg-button-blue:focus,
+.post-content a.spg-button-blue:active,
+.post-content a.spg-download-button,
+.post-content a.spg-download-button:visited,
+.post-content a.spg-download-button:hover,
+.post-content a.spg-download-button:focus,
+.post-content a.spg-download-button:active{
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  opacity:1!important;
+  text-shadow:none!important;
+  font-weight:800!important;
 }
