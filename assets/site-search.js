@@ -1,5 +1,5 @@
 (() => {
-  const ASSET_VERSION='20260724-revealgold1';
+  const ASSET_VERSION='20260724-copyright1';
   function addStylesheet(path){
     const link=document.createElement('link');
     link.rel='stylesheet';
@@ -15,6 +15,31 @@
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const trademarkPattern=/™|&trade;|&#8482;|&#x2122;/gi;
+
+  function removeTrademarkSymbols(root=document){
+    const scope=root.nodeType===9?root:root.ownerDocument||document;
+    if(scope.title)scope.title=scope.title.replace(trademarkPattern,'');
+    const walker=scope.createTreeWalker(root.nodeType===9?root.documentElement:root,NodeFilter.SHOW_TEXT);
+    let node;
+    while((node=walker.nextNode())){
+      const parent=node.parentElement;
+      if(parent&&/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/i.test(parent.tagName))continue;
+      if(trademarkPattern.test(node.nodeValue||''))node.nodeValue=(node.nodeValue||'').replace(trademarkPattern,'');
+      trademarkPattern.lastIndex=0;
+    }
+    const base=root.nodeType===9?root:root;
+    if(base.querySelectorAll){
+      base.querySelectorAll('[title],[aria-label],[alt],meta[content]').forEach(el=>{
+        ['title','aria-label','alt','content'].forEach(name=>{
+          if(!el.hasAttribute(name))return;
+          const value=el.getAttribute(name)||'';
+          if(trademarkPattern.test(value))el.setAttribute(name,value.replace(trademarkPattern,''));
+          trademarkPattern.lastIndex=0;
+        });
+      });
+    }
+  }
 
   const brand=$('.brand');
   if(brand && !$('.spg-brand-badge',brand)){
@@ -22,7 +47,7 @@
     const subtitle=$(':scope > span',brand);
     const copy=document.createElement('div');
     copy.className='spg-brand-copy';
-    if(title){title.textContent='Sleep Pathways Guild™ Blog';copy.appendChild(title)}
+    if(title){title.textContent='Sleep Pathways Guild Blog';copy.appendChild(title)}
     if(subtitle)copy.appendChild(subtitle);
     const badge=document.createElement('img');
     badge.className='spg-brand-badge';
@@ -173,5 +198,15 @@
   const postContent=$('.post-content');
   if(postContent){new MutationObserver(refreshContrast).observe(postContent,{childList:true,subtree:true})}
   document.addEventListener('toggle',e=>{if(e.target.matches&&e.target.matches('.post-content details'))applyRevealGold()},true);
+
+  removeTrademarkSymbols(document);
+  let cleanupQueued=false;
+  new MutationObserver(()=>{
+    if(cleanupQueued)return;
+    cleanupQueued=true;
+    requestAnimationFrame(()=>{cleanupQueued=false;removeTrademarkSymbols(document)});
+  }).observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','alt','content']});
+
   document.documentElement.dataset.spgContrast='reveal-gold-1';
+  document.documentElement.dataset.spgBranding='copyright-only';
 })();
