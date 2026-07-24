@@ -1,5 +1,5 @@
 (() => {
-  const ASSET_VERSION='20260723-contrast5';
+  const ASSET_VERSION='20260723-brand1';
   function addStylesheet(path){
     const link=document.createElement('link');
     link.rel='stylesheet';
@@ -10,10 +10,31 @@
   addStylesheet('/assets/brand-teal-blue.css');
   addStylesheet('/assets/resource-enhancements.css');
   addStylesheet('/assets/guild-gold-accent.css');
+  addStylesheet('/assets/blog-badge-brand.css');
 
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+  const brand=$('.brand');
+  if(brand && !$('.spg-brand-badge',brand)){
+    const title=$('strong',brand);
+    const subtitle=$(':scope > span',brand);
+    const copy=document.createElement('div');
+    copy.className='spg-brand-copy';
+    if(title){title.textContent='Sleep Pathways Guild™ Blog';copy.appendChild(title)}
+    if(subtitle)copy.appendChild(subtitle);
+    const badge=document.createElement('img');
+    badge.className='spg-brand-badge';
+    badge.src='https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png';
+    badge.alt='Sleep Pathways Guild badge logo';
+    badge.width=60;
+    badge.height=60;
+    brand.classList.add('spg-brand-enhanced');
+    brand.prepend(badge);
+    brand.appendChild(copy);
+    brand.setAttribute('aria-label','Sleep Pathways Guild Blog home');
+  }
 
   const overlay=document.createElement('div');
   overlay.className='search-overlay';
