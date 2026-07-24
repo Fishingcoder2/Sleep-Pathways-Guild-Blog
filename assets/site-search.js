@@ -1,5 +1,5 @@
 (() => {
-  const ASSET_VERSION='20260724-copyright1';
+  const ASSET_VERSION='20260724-mission1';
   function addStylesheet(path){
     const link=document.createElement('link');
     link.rel='stylesheet';
@@ -11,6 +11,7 @@
   addStylesheet('/assets/resource-enhancements.css');
   addStylesheet('/assets/guild-gold-accent.css');
   addStylesheet('/assets/blog-badge-brand.css');
+  addStylesheet('/assets/home-mission.css');
 
   const $=(s,c=document)=>c.querySelector(s);
   const $$=(s,c=document)=>[...c.querySelectorAll(s)];
@@ -82,6 +83,16 @@
   if(menuBtn&&nav)menuBtn.addEventListener('click',()=>{const on=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(on))});
   const path=location.pathname;
   $$('.site-nav a').forEach(a=>{const href=a.getAttribute('href');if(href==='/'?path==='/':href&&path.startsWith(href))a.classList.add('active')});
+
+  if(path==='/' && !$('.spg-home-mission')){
+    const section=document.createElement('section');
+    section.className='spg-home-mission';
+    section.setAttribute('aria-labelledby','spg-home-mission-title');
+    section.innerHTML=`<span class="spg-home-kicker">Free public learning • Education first</span><h2 id="spg-home-mission-title">A guild for the craft of sleep technology.</h2><p>Sleep Pathways Guild is an independent, peer-led educational project built to keep practical sleep-technology learning within reach. The blog is one part of a wider collection of free public webapps, labs, articles, downloads, and professional support for RPSGT learners, CPSGT learners, students, and working technologists.</p><div class="spg-home-mission-grid"><article class="spg-home-mission-card"><h3>Robert Dopson, RPSGT</h3><p>The Guild was built from the perspective of a sleep technologist who believes serious learners deserve practical explanations, useful tools, encouragement, and a place to begin without cost being the first obstacle.</p></article><article class="spg-home-mission-card"><h3>Inspired by Dr. William C. Dement</h3><p>The Guild honors Dr. Dement’s example as a sleep-medicine pioneer, teacher, and public advocate who worked to help people understand that sleep matters. <a href="https://med.stanford.edu/news/all-news/2020/06/william-dement-giant-in-field-of-sleep-medicine-dies-at-91.html" target="_blank" rel="noopener">Read Stanford Medicine’s remembrance.</a></p></article><article class="spg-home-mission-card"><h3>Free public offerings</h3><p>Open the RPSGT study webapp, EKG Skills Lab, free study downloads, and blog lessons. A separate CPSGT webapp is nearing release. Buying a book is never required to begin learning.</p></article></div><div class="spg-home-mission-actions"><a class="primary" href="https://sleeppathwaysguild.com/#free-resources">Explore Free Guild Resources</a><a class="secondary" href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">Launch the RPSGT Webapp</a><a class="secondary" href="/downloads/">Open Free Downloads</a></div>`;
+    const hero=$('.hero');
+    if(hero)hero.insertAdjacentElement('afterend',section);
+    else $('main')?.prepend(section);
+  }
 
   if(path==='/p/rpsgt-exam-prep-book-store.html'){
     const studyTools=$('#study-tools');
@@ -209,4 +220,5 @@
 
   document.documentElement.dataset.spgContrast='reveal-gold-1';
   document.documentElement.dataset.spgBranding='copyright-only';
+  document.documentElement.dataset.spgHomepage='mission-first-1';
 })();
