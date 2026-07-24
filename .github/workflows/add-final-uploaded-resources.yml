@@ -1,0 +1,68 @@
+name: Add final uploaded study resources
+
+on:
+  push:
+    paths:
+      - .github/workflows/add-final-uploaded-resources.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download remaining uploaded resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p downloads/visuals downloads/pdfs /tmp/spg-final
+
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0&export=download&confirm=t' \
+            --output /tmp/spg-final/digital-sleep-staging-playbook.jpg
+
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=1kNOMP3pCq7u3la0uZPSuhqxbiSfjEURi&export=download&confirm=t' \
+            --output /tmp/spg-final/rpsgt-one-hour-a-day-readiness-tracker-print.pdf
+
+          file /tmp/spg-final/*
+          file --brief --mime-type /tmp/spg-final/digital-sleep-staging-playbook.jpg | grep -q '^image/'
+          test "$(file --brief --mime-type /tmp/spg-final/rpsgt-one-hour-a-day-readiness-tracker-print.pdf)" = 'application/pdf'
+
+          cp /tmp/spg-final/digital-sleep-staging-playbook.jpg downloads/visuals/digital-sleep-staging-playbook.jpg
+          cp /tmp/spg-final/rpsgt-one-hour-a-day-readiness-tracker-print.pdf downloads/pdfs/rpsgt-one-hour-a-day-readiness-tracker-print.pdf
+
+      - name: Add resources to download library
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('downloads/index.html')
+          text = path.read_text(encoding='utf-8')
+          needle = '</section></main>'
+          cards = (
+            '<article class="resource"><span>Visual</span><h2>Coach Bob’s Digital Sleep Staging Playbook</h2>'
+            '<a href="/downloads/visuals/digital-sleep-staging-playbook.jpg" target="_blank" rel="noopener">Open resource</a></article>'
+            '<article class="resource"><span>PDF</span><h2>RPSGT Readiness Tracker — Print Edition</h2>'
+            '<a href="/downloads/pdfs/rpsgt-one-hour-a-day-readiness-tracker-print.pdf" target="_blank" rel="noopener">Open resource</a></article>'
+          )
+          if 'digital-sleep-staging-playbook.jpg' not in text:
+              text = text.replace(needle, cards + needle)
+              path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Commit resources and remove importer
+        shell: bash
+        run: |
+          rm -f .github/workflows/add-final-uploaded-resources.yml
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add -A
+          git commit -m 'Add digital staging playbook and print tracker'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
