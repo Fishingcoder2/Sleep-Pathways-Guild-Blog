@@ -1,0 +1,144 @@
+name: Fix all reveal answer buttons
+
+on:
+  push:
+    paths:
+      - .github/workflows/fix-all-reveal-answer-gold.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply global gold reveal-answer styling
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          js_path = Path('assets/site-search.js')
+          js = js_path.read_text(encoding='utf-8')
+          js = re.sub(
+              r"const ASSET_VERSION='[^']+';",
+              "const ASSET_VERSION='20260724-revealgold1';",
+              js,
+              count=1,
+          )
+          js = js.replace(
+              "'.spg-answer','details','.spg-checklist label'",
+              "'.spg-answer','.spg-checklist label'",
+          )
+
+          old_refresh = "function refreshContrast(){detectDarkSurfaces();applyDarkContrast();applyLightContrast()}"
+          new_refresh = r'''function applyRevealGold(){
+    const selector='.post-content details>summary,.post-content details.spg-reveal>summary,.post-content details[class*="reveal"]>summary';
+    $$(selector).forEach(summary=>{
+      summary.style.setProperty('background','#071a2e','important');
+      summary.style.setProperty('color','#f6d365','important');
+      summary.style.setProperty('-webkit-text-fill-color','#f6d365','important');
+      summary.style.setProperty('border','2px solid #d5a62e','important');
+      summary.style.setProperty('border-radius','12px','important');
+      summary.style.setProperty('padding','14px 18px','important');
+      summary.style.setProperty('opacity','1','important');
+      summary.style.setProperty('font-weight','800','important');
+      summary.style.setProperty('line-height','1.35','important');
+      summary.style.setProperty('text-shadow','none','important');
+      summary.style.setProperty('cursor','pointer','important');
+      summary.querySelectorAll('*').forEach(node=>{
+        node.style.setProperty('color','#f6d365','important');
+        node.style.setProperty('-webkit-text-fill-color','#f6d365','important');
+        node.style.setProperty('opacity','1','important');
+        node.style.setProperty('text-shadow','none','important');
+      });
+    });
+  }
+
+  function refreshContrast(){detectDarkSurfaces();applyDarkContrast();applyLightContrast();applyRevealGold()}'''
+
+          if old_refresh not in js:
+              raise SystemExit('Expected refreshContrast function was not found; no unsafe partial edit made.')
+          js = js.replace(old_refresh, new_refresh, 1)
+          js = js.replace(
+              "document.documentElement.dataset.spgContrast='contrast5';",
+              "document.addEventListener('toggle',e=>{if(e.target.matches&&e.target.matches('.post-content details'))applyRevealGold()},true);\n  document.documentElement.dataset.spgContrast='reveal-gold-1';",
+              1,
+          )
+          js_path.write_text(js, encoding='utf-8')
+
+          css_path = Path('assets/site.css')
+          css = css_path.read_text(encoding='utf-8')
+          gold_css = r'''
+
+/* Global accessible Reveal answer treatment — gold on navy */
+.post-content details > summary,
+.post-content details.spg-reveal > summary,
+.post-content details[class*="reveal"] > summary,
+.post-content details > summary:visited,
+.post-content details > summary:hover,
+.post-content details > summary:focus,
+.post-content details > summary:active,
+.post-content details[open] > summary {
+  display: block !important;
+  background: #071a2e !important;
+  color: #f6d365 !important;
+  -webkit-text-fill-color: #f6d365 !important;
+  border: 2px solid #d5a62e !important;
+  border-radius: 12px !important;
+  padding: 14px 18px !important;
+  opacity: 1 !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+}
+.post-content details > summary *,
+.post-content details.spg-reveal > summary *,
+.post-content details[class*="reveal"] > summary * {
+  color: #f6d365 !important;
+  -webkit-text-fill-color: #f6d365 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.post-content details > summary::marker,
+.post-content details > summary::-webkit-details-marker {
+  color: #f6d365 !important;
+}
+.post-content details > summary:focus-visible {
+  outline: 4px solid rgba(246, 211, 101, .45) !important;
+  outline-offset: 3px !important;
+}
+'''
+          if 'Global accessible Reveal answer treatment — gold on navy' not in css:
+              css = css.rstrip() + gold_css + '\n'
+          css_path.write_text(css, encoding='utf-8')
+
+          script_re = re.compile(r'src="/assets/site-search\.js(?:\?v=[^"]+)?"')
+          css_re = re.compile(r'href="/assets/site\.css(?:\?v=[^"]+)?"')
+          changed = 0
+          for page in Path('.').rglob('*.html'):
+              if '.git' in page.parts:
+                  continue
+              html = page.read_text(encoding='utf-8')
+              updated = script_re.sub('src="/assets/site-search.js?v=20260724-revealgold1"', html)
+              updated = css_re.sub('href="/assets/site.css?v=20260724-revealgold1"', updated)
+              if updated != html:
+                  page.write_text(updated, encoding='utf-8')
+                  changed += 1
+          print(f'Updated shared assets and cache-busted {changed} HTML pages.')
+          PY
+
+      - name: Commit repair and remove workflow
+        run: |
+          rm -f .github/workflows/fix-all-reveal-answer-gold.yml
+          git config user.name "Sleep Pathways Guild Automation"
+          git config user.email "admin@sleeppathsguild.com"
+          git add -A
+          git commit -m "Fix all Reveal answer buttons with accessible gold text"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
