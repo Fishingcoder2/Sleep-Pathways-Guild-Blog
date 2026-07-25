@@ -4,13 +4,13 @@ on:
   push:
     paths:
       - '.github/workflows/repair-digital-sleep-staging-playbook.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   repair:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -63,4 +63,4 @@ jobs:
           git commit -m 'Repair playbook and print tracker downloads'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
-# Retrigger combined repair.
+# Retrigger without actor restriction.
