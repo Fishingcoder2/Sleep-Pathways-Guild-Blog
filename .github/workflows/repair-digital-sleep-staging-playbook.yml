@@ -1,4 +1,4 @@
-name: Repair digital sleep staging playbook
+name: Repair broken study downloads
 
 on:
   push:
@@ -18,28 +18,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download and validate original playbook
+      - name: Download and validate intact originals
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p downloads/visuals /tmp/spg-repair
+          mkdir -p downloads/visuals downloads/pdfs /tmp/spg-repair
+
           curl --fail --location --retry 4 --retry-delay 2 \
             'https://drive.usercontent.google.com/download?id=14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0&export=download&confirm=t' \
             --output /tmp/spg-repair/digital-sleep-staging-playbook.jpg
+
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=1kNOMP3pCq7u3la0uZPSuhqxbiSfjEURi&export=download&confirm=t' \
+            --output /tmp/spg-repair/rpsgt-one-hour-a-day-readiness-tracker-print.pdf
+
           test "$(file --brief --mime-type /tmp/spg-repair/digital-sleep-staging-playbook.jpg)" = 'image/jpeg'
+          test "$(file --brief --mime-type /tmp/spg-repair/rpsgt-one-hour-a-day-readiness-tracker-print.pdf)" = 'application/pdf'
+
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('/tmp/spg-repair/digital-sleep-staging-playbook.jpg')
-          data = p.read_bytes()
-          if not data.startswith(b'\xff\xd8\xff') or not data.rstrip().endswith(b'\xff\xd9'):
-              raise SystemExit('Downloaded file is not a complete JPEG.')
-          if len(data) < 10000:
-              raise SystemExit('Downloaded JPEG is unexpectedly small.')
+          image = Path('/tmp/spg-repair/digital-sleep-staging-playbook.jpg').read_bytes()
+          pdf = Path('/tmp/spg-repair/rpsgt-one-hour-a-day-readiness-tracker-print.pdf').read_bytes()
+          if not image.startswith(b'\xff\xd8\xff') or not image.rstrip().endswith(b'\xff\xd9'):
+              raise SystemExit('Playbook is not a complete JPEG.')
+          if not pdf.startswith(b'%PDF-') or b'%%EOF' not in pdf[-2048:]:
+              raise SystemExit('Print tracker is not a complete PDF.')
+          if len(image) < 10000 or len(pdf) < 10000:
+              raise SystemExit('Downloaded resource is unexpectedly small.')
           PY
+
           cp /tmp/spg-repair/digital-sleep-staging-playbook.jpg \
             downloads/visuals/digital-sleep-staging-playbook.jpg
+          cp /tmp/spg-repair/rpsgt-one-hour-a-day-readiness-tracker-print.pdf \
+            downloads/pdfs/rpsgt-one-hour-a-day-readiness-tracker-print.pdf
 
-      - name: Commit repaired image and remove repair workflow
+      - name: Commit repaired files and remove workflow
         shell: bash
         run: |
           set -euo pipefail
@@ -47,7 +60,7 @@ jobs:
           git config user.name 'Sleep Pathways Guild Automation'
           git config user.email 'admin@sleeppathsguild.com'
           git add -A
-          git commit -m 'Repair digital sleep staging playbook image'
+          git commit -m 'Repair playbook and print tracker downloads'
           git push origin "HEAD:${GITHUB_REF_NAME}"
 
-# Retrigger after workflow registration.
+# Retrigger combined repair.
