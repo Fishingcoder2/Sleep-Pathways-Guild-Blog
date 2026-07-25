@@ -1,0 +1,51 @@
+name: Repair digital sleep staging playbook
+
+on:
+  push:
+    paths:
+      - '.github/workflows/repair-digital-sleep-staging-playbook.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download and validate original playbook
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p downloads/visuals /tmp/spg-repair
+          curl --fail --location --retry 4 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0&export=download&confirm=t' \
+            --output /tmp/spg-repair/digital-sleep-staging-playbook.jpg
+          test "$(file --brief --mime-type /tmp/spg-repair/digital-sleep-staging-playbook.jpg)" = 'image/jpeg'
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('/tmp/spg-repair/digital-sleep-staging-playbook.jpg')
+          data = p.read_bytes()
+          if not data.startswith(b'\xff\xd8\xff') or not data.rstrip().endswith(b'\xff\xd9'):
+              raise SystemExit('Downloaded file is not a complete JPEG.')
+          if len(data) < 10000:
+              raise SystemExit('Downloaded JPEG is unexpectedly small.')
+          PY
+          cp /tmp/spg-repair/digital-sleep-staging-playbook.jpg \
+            downloads/visuals/digital-sleep-staging-playbook.jpg
+
+      - name: Commit repaired image and remove repair workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/repair-digital-sleep-staging-playbook.yml
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add -A
+          git commit -m 'Repair digital sleep staging playbook image'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
