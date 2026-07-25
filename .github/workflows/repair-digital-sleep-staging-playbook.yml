@@ -49,3 +49,5 @@ jobs:
           git add -A
           git commit -m 'Repair digital sleep staging playbook image'
           git push origin "HEAD:${GITHUB_REF_NAME}"
+
+# Retrigger after workflow registration.
