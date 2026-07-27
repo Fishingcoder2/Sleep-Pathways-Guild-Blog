@@ -1,0 +1,54 @@
+name: Repair blog analytics and SEO
+
+on:
+  push:
+    branches:
+      - seo-analytics-repair-2026-07-27
+    paths:
+      - tools/seo_repair.py
+      - .github/workflows/seo-analytics-repair.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: seo-analytics-repair-2026-07-27
+          fetch-depth: 0
+
+      - name: Apply analytics and technical SEO repair
+        run: python3 tools/seo_repair.py
+
+      - name: Validate generated files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s robots.txt
+          test -s sitemap.xml
+          test -s feed.xml
+          test -s 404.html
+          grep -R --include='*.html' -L 'G-MZTRYT67VG' . | grep -v '^./.git/' && exit 1 || true
+          grep -q '<urlset' sitemap.xml
+          grep -q '<rss' feed.xml
+          python3 -m py_compile tools/seo_repair.py
+
+      - name: Commit repaired site
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add -A
+          if git diff --cached --quiet; then
+            echo 'No site changes were needed.'
+          else
+            git commit -m 'Repair analytics coverage and technical SEO'
+            git push origin HEAD:seo-analytics-repair-2026-07-27
+          fi
