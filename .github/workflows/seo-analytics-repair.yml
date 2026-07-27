@@ -1,4 +1,4 @@
-name: Repair blog analytics and SEO
+name: Validate blog analytics and SEO
 
 on:
   push:
@@ -15,11 +15,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  repair:
-    if: github.actor != 'github-actions[bot]'
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repair branch
@@ -57,16 +56,13 @@ jobs:
                   raise SystemExit(f'Head order validation failed: {path}')
           PY
 
-      - name: Commit repaired site
+      - name: Confirm generated SEO files are committed
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name 'Sleep Pathways Guild Automation'
-          git config user.email 'admin@sleeppathsguild.com'
-          git add -A
-          if git diff --cached --quiet; then
-            echo 'No site changes were needed.'
-          else
-            git commit -m 'Repair analytics coverage and technical SEO'
-            git push origin HEAD:seo-analytics-repair-2026-07-27
+          if ! git diff --quiet; then
+            git diff --stat
+            echo '::error::The SEO generator changed tracked files. Commit those generated changes before merging.'
+            exit 1
           fi
+          echo 'Blog SEO and analytics files are current.'
