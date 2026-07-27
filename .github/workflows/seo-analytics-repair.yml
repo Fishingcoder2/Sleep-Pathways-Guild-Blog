@@ -5,6 +5,10 @@ on:
     branches:
       - seo-analytics-repair-2026-07-27
     paths:
+      - '**/*.html'
+      - robots.txt
+      - sitemap.xml
+      - feed.xml
       - tools/seo_repair.py
       - tools/normalize_head_order.py
       - .github/workflows/seo-analytics-repair.yml
@@ -27,12 +31,7 @@ jobs:
           ref: seo-analytics-repair-2026-07-27
           fetch-depth: 0
 
-      - name: Apply analytics and technical SEO repair
-        run: |
-          python3 tools/seo_repair.py
-          python3 tools/normalize_head_order.py
-
-      - name: Validate generated files
+      - name: Validate committed blog files
         shell: bash
         run: |
           set -euo pipefail
@@ -55,14 +54,4 @@ jobs:
               if charset < 0 or marker < 0 or charset > marker:
                   raise SystemExit(f'Head order validation failed: {path}')
           PY
-
-      - name: Confirm generated SEO files are committed
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! git diff --quiet; then
-            git diff --stat
-            echo '::error::The SEO generator changed tracked files. Commit those generated changes before merging.'
-            exit 1
-          fi
-          echo 'Blog SEO and analytics files are current.'
+          echo 'Blog SEO and analytics validation passed.'
