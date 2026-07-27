@@ -7,6 +7,10 @@ on:
     paths:
       - tools/seo_repair.py
       - .github/workflows/seo-analytics-repair.yml
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
