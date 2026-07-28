@@ -6,6 +6,7 @@ on:
       - article-reference-links-2026-07-27
     paths:
       - tools/apply_article_reference_links.py
+      - tools/relocate_reference_blocks.py
       - .github/workflows/apply-article-reference-links.yml
   workflow_dispatch:
 
@@ -24,13 +25,15 @@ jobs:
           fetch-depth: 0
 
       - name: Add body-supported links
-        run: python3 tools/apply_article_reference_links.py
+        run: |
+          python3 tools/apply_article_reference_links.py
+          python3 tools/relocate_reference_blocks.py
 
       - name: Validate disclosures and links
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/apply_article_reference_links.py
+          python3 -m py_compile tools/apply_article_reference_links.py tools/relocate_reference_blocks.py
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -44,7 +47,12 @@ jobs:
               ends = text.count('<!-- SPG LINKED REFERENCES END -->')
               if starts != ends or starts > 1:
                   raise SystemExit(f'Invalid reference markers: {path}')
-              linked += int(starts == 1)
+              if starts == 1:
+                  linked += 1
+                  first_body_close = text.lower().find('</body>')
+                  marker = text.find('<!-- SPG LINKED REFERENCES START -->')
+                  if first_body_close >= 0 and marker > first_body_close:
+                      raise SystemExit(f'Reference panel is outside the first body: {path}')
               amazon = re.findall(r'<a\b[^>]*href=["\'](https://www\.amazon\.com/[^"\']+)["\'][^>]*>', text, re.I)
               if amazon:
                   affiliate += 1
@@ -72,7 +80,7 @@ jobs:
           if git diff --cached --quiet; then
             echo 'Reference links are current.'
           else
-            git commit -m 'Add verified article references and disclosed book links'
+            git commit -m 'Place verified reference panels inside article bodies'
             git pull --rebase origin article-reference-links-2026-07-27
             git push origin HEAD:article-reference-links-2026-07-27
           fi
