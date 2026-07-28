@@ -1,0 +1,42 @@
+name: Audit blog article references
+
+on:
+  push:
+    branches:
+      - affiliate-reference-linking-2026-07-27
+    paths:
+      - tools/reference_audit.py
+      - .github/workflows/reference-link-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: affiliate-reference-linking-2026-07-27
+          fetch-depth: 0
+
+      - name: Build article reference inventory
+        run: python3 tools/reference_audit.py
+
+      - name: Commit audit report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add REFERENCE_LINK_AUDIT.md
+          if git diff --cached --quiet; then
+            echo 'Reference audit is current.'
+          else
+            git commit -m 'Inventory blog article references and resource links'
+            git pull --rebase origin affiliate-reference-linking-2026-07-27
+            git push origin HEAD:affiliate-reference-linking-2026-07-27
+          fi
