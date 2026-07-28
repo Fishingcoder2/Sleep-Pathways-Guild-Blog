@@ -6,6 +6,7 @@ on:
       - affiliate-reference-linking-2026-07-27
     paths:
       - tools/link_article_references.py
+      - tools/refine_reference_links.py
       - .github/workflows/apply-reference-links.yml
   workflow_dispatch:
 
@@ -24,13 +25,15 @@ jobs:
           fetch-depth: 0
 
       - name: Add verified reference and affiliate links
-        run: python3 tools/link_article_references.py
+        run: |
+          python3 tools/link_article_references.py
+          python3 tools/refine_reference_links.py
 
       - name: Validate linked resources
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m py_compile tools/link_article_references.py
+          python3 -m py_compile tools/link_article_references.py tools/refine_reference_links.py
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -79,7 +82,7 @@ jobs:
           if git diff --cached --quiet; then
             echo 'Article reference links are current.'
           else
-            git commit -m 'Link article references and disclosed affiliate books'
+            git commit -m 'Refine article links to body-supported references'
             git pull --rebase origin affiliate-reference-linking-2026-07-27
             git push origin HEAD:affiliate-reference-linking-2026-07-27
           fi
