@@ -1,0 +1,85 @@
+name: Apply article reference and affiliate links
+
+on:
+  push:
+    branches:
+      - affiliate-reference-linking-2026-07-27
+    paths:
+      - tools/link_article_references.py
+      - .github/workflows/apply-reference-links.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  link:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out reference-link branch
+        uses: actions/checkout@v4
+        with:
+          ref: affiliate-reference-linking-2026-07-27
+          fetch-depth: 0
+
+      - name: Add verified reference and affiliate links
+        run: python3 tools/link_article_references.py
+
+      - name: Validate linked resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/link_article_references.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          pages = list(Path('.').glob('20[0-9][0-9]/*/*.html'))
+          if not pages:
+              raise SystemExit('No blog articles found')
+
+          linked_pages = 0
+          affiliate_pages = 0
+          for path in pages:
+              text = path.read_text(encoding='utf-8', errors='replace')
+              starts = text.count('<!-- SPG LINKED REFERENCES START -->')
+              ends = text.count('<!-- SPG LINKED REFERENCES END -->')
+              if starts != ends or starts > 1:
+                  raise SystemExit(f'Invalid linked-reference marker count: {path}')
+              if starts:
+                  linked_pages += 1
+
+              amazon_links = re.findall(r'href=["\'](https://www\.amazon\.com/[^"\']+)["\']', text, re.I)
+              if amazon_links:
+                  affiliate_pages += 1
+                  for url in amazon_links:
+                      if 'tag=spg_rpsgt-20' not in url:
+                          raise SystemExit(f'Amazon link missing affiliate tag in {path}: {url}')
+                  if 'As an Amazon Associate I earn from qualifying purchases.' not in text:
+                      raise SystemExit(f'Amazon disclosure missing from {path}')
+                  for match in re.finditer(r'<a\b[^>]*href=["\']https://www\.amazon\.com/[^"\']+["\'][^>]*>', text, re.I):
+                      tag = match.group(0).lower()
+                      if 'sponsored' not in tag or 'nofollow' not in tag:
+                          raise SystemExit(f'Amazon link missing sponsored/nofollow in {path}')
+
+          store = Path('p/rpsgt-exam-prep-book-store.html').read_text(encoding='utf-8', errors='replace')
+          if 'As an Amazon Associate I earn from qualifying purchases.' not in store:
+              raise SystemExit('Bookstore disclosure was not updated')
+          print(f'Validated {linked_pages} linked articles; {affiliate_pages} contain affiliate book links.')
+          PY
+
+      - name: Commit linked articles
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'Sleep Pathways Guild Automation'
+          git config user.email 'admin@sleeppathsguild.com'
+          git add 2026 p/rpsgt-exam-prep-book-store.html
+          if git diff --cached --quiet; then
+            echo 'Article reference links are current.'
+          else
+            git commit -m 'Link article references and disclosed affiliate books'
+            git pull --rebase origin affiliate-reference-linking-2026-07-27
+            git push origin HEAD:affiliate-reference-linking-2026-07-27
+          fi
