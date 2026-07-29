@@ -1,0 +1,69 @@
+name: Apply SEO phase 2 hub links
+
+on:
+  push:
+    branches:
+      - seo-phase-2-topic-hubs-2026-07-29
+
+permissions:
+  contents: write
+
+jobs:
+  patch-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-phase-2-topic-hubs-2026-07-29
+          fetch-depth: 0
+      - name: Patch homepage hub links and download metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          replacements = {
+              '<a href="/?topic=cpsgt">CPSGT Exam Prep</a>': '<a href="/topics/cpsgt-exam-prep/">CPSGT Exam Prep</a>',
+              '<a href="/?topic=rpsgt">RPSGT Exam Prep</a>': '<a href="/topics/rpsgt-exam-prep/">RPSGT Exam Prep</a>',
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Missing expected homepage text: {old}')
+              text = text.replace(old, new, 1)
+          index.write_text(text, encoding='utf-8')
+
+          downloads = Path('downloads/index.html')
+          text = downloads.read_text(encoding='utf-8')
+          old_title = 'Free Study Downloads | Sleep Pathways Guild'
+          new_title = 'Free RPSGT & CPSGT Study Downloads | Sleep Pathways Guild'
+          if old_title not in text:
+              raise SystemExit('Missing expected downloads title')
+          text = text.replace(old_title, new_title)
+          old_desc = 'Original Sleep Pathways Guild RPSGT study visuals and printable PDF resources.'
+          new_desc = 'Free RPSGT and CPSGT study downloads with sleep-staging visuals, PSG artifact tools, PAP resources, EKG practice, and printable readiness trackers.'
+          if old_desc not in text:
+              raise SystemExit('Missing expected downloads description')
+          text = text.replace(old_desc, new_desc)
+          old_h1 = '<h1>Free study downloads</h1>'
+          new_h1 = '<h1>Free RPSGT and CPSGT study downloads</h1>'
+          if old_h1 not in text:
+              raise SystemExit('Missing expected downloads heading')
+          text = text.replace(old_h1, new_h1, 1)
+          old_intro = 'Original visuals and printable tools for sleep-technology learning and RPSGT exam preparation.'
+          new_intro = 'Original visuals and printable tools for RPSGT and CPSGT exam preparation, sleep scoring, PSG artifact recognition, PAP titration, EKG review, and sleep-technology calculations.'
+          if old_intro not in text:
+              raise SystemExit('Missing expected downloads introduction')
+          text = text.replace(old_intro, new_intro, 1)
+          downloads.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit patched pages
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html downloads/index.html
+          git commit -m "Link SEO topic hubs and improve downloads metadata"
+          git push origin HEAD:seo-phase-2-topic-hubs-2026-07-29
