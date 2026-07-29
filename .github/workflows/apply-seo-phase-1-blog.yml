@@ -1,0 +1,99 @@
+name: Apply SEO phase 1 to blog
+
+on:
+  push:
+    branches:
+      - seo-phase-1-blog-2026-07-29
+    paths:
+      - .github/workflows/apply-seo-phase-1-blog.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: seo-phase-1-blog-2026-07-29
+          fetch-depth: 0
+
+      - name: Update blog homepage SEO and navigation
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("index.html")
+          text = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '<meta property="og:title" content="Sleep Pathways Guild Blog">',
+                  '<meta property="og:title" content="Sleep Technologist Study Blog | RPSGT, CPSGT & PSG">'
+              ),
+              (
+                  '<meta property="og:description" content="Sleep technology education, RPSGT exam preparation, scoring review, EKG learning, and professional-growth articles.">',
+                  '<meta property="og:description" content="Practical sleep technologist study guides covering RPSGT and CPSGT exam prep, sleep scoring, PSG artifacts, PAP titration, EKG, pediatric sleep, and calculations.">'
+              ),
+              (
+                  '<meta name="twitter:title" content="Sleep Pathways Guild Blog">',
+                  '<meta name="twitter:title" content="Sleep Technologist Study Blog | RPSGT, CPSGT & PSG">'
+              ),
+              (
+                  '<meta name="twitter:description" content="Sleep technology education, RPSGT exam preparation, scoring review, EKG learning, and professional-growth articles.">',
+                  '<meta name="twitter:description" content="Practical sleep technologist study guides covering RPSGT and CPSGT exam prep, sleep scoring, PSG artifacts, PAP titration, EKG, pediatric sleep, and calculations.">'
+              ),
+              (
+                  '"description":"Sleep technology education, RPSGT exam preparation, scoring review, EKG learning, and professional-growth articles."',
+                  '"description":"Practical sleep technologist study guides covering RPSGT and CPSGT exam prep, sleep scoring, PSG artifacts, PAP titration, EKG, pediatric sleep, and calculations."'
+              ),
+              (
+                  '<title>Sleep Pathways Guild Blog</title><meta name="description" content="Sleep technology education, RPSGT exam preparation, scoring review, EKG learning, and professional-growth articles.">',
+                  '<title>Sleep Technologist Study Blog | RPSGT, CPSGT & PSG</title><meta name="description" content="Practical sleep technologist study guides covering RPSGT and CPSGT exam prep, sleep scoring, PSG artifacts, PAP titration, EKG, pediatric sleep, and calculations.">'
+              ),
+              (
+                  '<a href="/p/rpsgt-exam-prep-book-store.html">Book Store</a><a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">RPSGT Webapp</a>',
+                  '<a href="/p/rpsgt-exam-prep-book-store.html">Book Store</a><a href="https://sleeppathwaysguild.com/cpsgt-study-app.html">CPSGT Webapp</a><a href="https://sleeppathwaysguild.com/RPSGTv2.2026.html">RPSGT Webapp</a>'
+              ),
+              (
+                  '<a href="/?topic=rpsgt">RPSGT Exam Prep</a>',
+                  '<a href="/?topic=cpsgt">CPSGT Exam Prep</a><a href="/?topic=rpsgt">RPSGT Exam Prep</a>'
+              ),
+              (
+                  '<h1>Sleep technology learning for the next step.</h1>',
+                  '<h1>Sleep technologist study guides, RPSGT and CPSGT exam prep.</h1>'
+              ),
+              (
+                  '<p class="lead">Articles, practical study support, RPSGT exam preparation, EKG learning, sleep-scoring review, and professional-growth resources from Sleep Pathways Guild.</p>',
+                  '<p class="lead">Practical study guides for sleep technologists and polysomnography learners, including RPSGT and CPSGT exam prep, sleep scoring, PSG artifact recognition, PAP titration, EKG review, pediatric sleep, and calculation practice.</p>'
+              )
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one match, found {count}: {old[:100]}")
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding="utf-8")
+
+          sitemap = Path("sitemap.xml")
+          sitemap_text = sitemap.read_text(encoding="utf-8")
+          old_home = '<url><loc>https://blog.sleeppathwaysguild.com/</loc><lastmod>2026-07-28</lastmod></url>'
+          new_home = '<url><loc>https://blog.sleeppathwaysguild.com/</loc><lastmod>2026-07-29</lastmod></url>'
+          if sitemap_text.count(old_home) != 1:
+              raise SystemExit("Blog homepage sitemap entry was not found exactly once")
+          sitemap.write_text(sitemap_text.replace(old_home, new_home, 1), encoding="utf-8")
+
+      - name: Commit SEO changes
+        run: |
+          git config user.name "Sleep Pathways Guild SEO Bot"
+          git config user.email "admin@sleeppathwaysguild.com"
+          git add index.html sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Improve blog search metadata and CPSGT discoverability"
+          git push origin HEAD:seo-phase-1-blog-2026-07-29
