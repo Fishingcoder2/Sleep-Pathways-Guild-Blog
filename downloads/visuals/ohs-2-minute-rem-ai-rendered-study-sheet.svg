@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img" aria-labelledby="title desc">
+<title id="title">Obesity hypoventilation on polysomnography: two-minute REM study sheet</title>
+<desc id="desc">AI-rendered educational simulation with four 30-second REM epochs, two EOG channels, shallow breathing, reduced thoracoabdominal excursion, falling oxygen saturation, rising transcutaneous carbon dioxide, and fictional blood-gas clues.</desc>
+<defs>
+  <style>
+    .bg{fill:#f7fbff}.paper{fill:#fff;stroke:#b8cbe2;stroke-width:2}.navy{fill:#12325f}.blue{fill:#1f5fbf}.green{fill:#1f7a4f}.purple{fill:#6941a5}.gold{fill:#b8872f}.muted{fill:#526173}.grid{stroke:#d5e0ed;stroke-width:1}.epoch{stroke:#9fb4cb;stroke-width:2;stroke-dasharray:8 7}.traceB{fill:none;stroke:#1f5fbf;stroke-width:2.2}.traceK{fill:none;stroke:#1e2936;stroke-width:2.4}.traceG{fill:none;stroke:#1f7a4f;stroke-width:3}.traceP{fill:none;stroke:#6941a5;stroke-width:2}.head{font:700 52px Arial,sans-serif}.sub{font:italic 28px Arial,sans-serif}.h2{font:700 29px Arial,sans-serif}.label{font:700 20px Arial,sans-serif}.small{font:18px Arial,sans-serif}.tiny{font:15px Arial,sans-serif}.value{font:700 21px Arial,sans-serif}
+  </style>
+</defs>
+<rect class="bg" width="1200" height="1600"/>
+<text x="600" y="70" text-anchor="middle" class="head navy">Obesity Hypoventilation on Polysomnography</text>
+<text x="600" y="112" text-anchor="middle" class="sub blue">Practical Notes for the Polysomnographic Technician / Sleep Technician</text>
+<line x1="40" y1="135" x2="1160" y2="135" stroke="#1f5fbf" stroke-width="4"/>
+
+<rect x="35" y="160" width="1130" height="775" rx="20" class="paper"/>
+<rect x="35" y="160" width="555" height="58" rx="18" class="navy"/>
+<text x="60" y="199" fill="#fff" class="h2">1) 2-MINUTE REM EXAMPLE (4 EPOCHS)</text>
+<rect x="910" y="168" width="240" height="44" rx="14" fill="#eef5ff" stroke="#1f5fbf" stroke-width="2"/>
+<text x="1030" y="197" text-anchor="middle" class="label blue">STAGE: REM</text>
+
+<text x="50" y="253" class="label muted">Clock time</text>
+<text x="200" y="253" class="label navy">00:00</text><text x="430" y="253" class="label navy">00:30</text><text x="660" y="253" class="label navy">01:00</text><text x="890" y="253" class="label navy">01:30</text><text x="1115" y="253" text-anchor="end" class="label navy">02:00</text>
+<text x="315" y="230" text-anchor="middle" class="small blue">EPOCH 1</text><text x="545" y="230" text-anchor="middle" class="small blue">EPOCH 2</text><text x="775" y="230" text-anchor="middle" class="small blue">EPOCH 3</text><text x="1005" y="230" text-anchor="middle" class="small blue">EPOCH 4</text>
+<line x1="200" y1="265" x2="200" y2="895" class="grid"/><line x1="430" y1="265" x2="430" y2="895" class="epoch"/><line x1="660" y1="265" x2="660" y2="895" class="epoch"/><line x1="890" y1="265" x2="890" y2="895" class="epoch"/><line x1="1120" y1="265" x2="1120" y2="895" class="grid"/>
+
+<g class="grid"><line x1="200" y1="315" x2="1120" y2="315"/><line x1="200" y1="385" x2="1120" y2="385"/><line x1="200" y1="455" x2="1120" y2="455"/><line x1="200" y1="525" x2="1120" y2="525"/><line x1="200" y1="600" x2="1120" y2="600"/><line x1="200" y1="675" x2="1120" y2="675"/><line x1="200" y1="750" x2="1120" y2="750"/><line x1="200" y1="825" x2="1120" y2="825"/><line x1="200" y1="895" x2="1120" y2="895"/></g>
+
+<text x="55" y="302" class="label blue">EEG</text><text x="55" y="326" class="tiny muted">low-voltage mixed frequency</text>
+<polyline class="traceB" points="200,306 220,297 240,310 260,300 280,313 300,295 320,307 340,301 360,312 380,296 400,308 420,303 440,314 460,296 480,308 500,300 520,314 540,299 560,310 580,298 600,311 620,301 640,309 660,297 680,312 700,299 720,309 740,296 760,311 780,300 800,314 820,298 840,309 860,300 880,312 900,297 920,310 940,299 960,313 980,296 1000,309 1020,301 1040,312 1060,298 1080,309 1100,301 1120,307"/>
+
+<text x="55" y="372" class="label blue">EOG 1</text><text x="55" y="396" class="tiny muted">left EOG</text>
+<polyline class="traceB" points="200,383 225,375 245,395 270,367 295,399 320,371 345,391 370,364 395,400 420,377 445,392 470,365 495,402 520,373 545,394 570,368 595,399 620,376 645,390 670,366 695,401 720,374 745,393 770,367 795,400 820,374 845,392 870,366 895,402 920,372 945,394 970,368 995,400 1020,374 1045,392 1070,365 1095,398 1120,381"/>
+
+<text x="55" y="442" class="label blue">EOG 2</text><text x="55" y="466" class="tiny muted">right EOG</text>
+<polyline class="traceB" points="200,453 225,462 245,442 270,470 295,438 320,466 345,446 370,473 395,437 420,460 445,445 470,472 495,435 520,464 545,443 570,469 595,438 620,461 645,447 670,471 695,436 720,463 745,444 770,470 795,437 820,463 845,445 870,471 895,435 920,465 945,443 970,469 995,437 1020,463 1045,445 1070,472 1095,439 1120,456"/>
+
+<text x="55" y="512" class="label purple">Chin EMG</text><text x="55" y="536" class="tiny muted">low tone</text>
+<polyline class="traceP" points="200,522 230,521 260,523 290,521 320,522 350,520 380,523 410,521 440,522 470,520 500,522 530,521 560,523 590,520 620,522 650,521 680,523 710,520 740,522 770,521 800,523 830,520 860,522 890,521 920,523 950,520 980,522 1010,521 1040,523 1070,520 1100,522 1120,521"/>
+
+<text x="55" y="587" class="label navy">Airflow</text><text x="55" y="611" class="tiny muted">continued but shallow</text>
+<path class="traceK" d="M200 600 C220 570 240 570 260 600 S300 630 320 600 S360 570 380 600 S420 630 440 600 S480 570 500 600 S540 630 560 600 S600 570 620 600 S660 630 680 600 S720 570 740 600 S780 630 800 600 S840 570 860 600 S900 630 920 600 S960 570 980 600 S1020 630 1040 600 S1080 570 1100 600 S1120 620 1120 600"/>
+
+<text x="55" y="662" class="label blue">Thorax</text><text x="55" y="686" class="tiny muted">reduced excursion</text>
+<path class="traceB" d="M200 675 C220 662 240 662 260 675 S300 688 320 675 S360 662 380 675 S420 688 440 675 S480 662 500 675 S540 688 560 675 S600 662 620 675 S660 688 680 675 S720 662 740 675 S780 688 800 675 S840 662 860 675 S900 688 920 675 S960 662 980 675 S1020 688 1040 675 S1080 662 1100 675 S1120 684 1120 675"/>
+
+<text x="55" y="737" class="label green">Abdomen</text><text x="55" y="761" class="tiny muted">reduced excursion</text>
+<path class="traceG" d="M200 750 C220 739 240 739 260 750 S300 761 320 750 S360 739 380 750 S420 761 440 750 S480 739 500 750 S540 761 560 750 S600 739 620 750 S660 761 680 750 S720 739 740 750 S780 761 800 750 S840 739 860 750 S900 761 920 750 S960 739 980 750 S1020 761 1040 750 S1080 739 1100 750 S1120 758 1120 750"/>
+
+<text x="55" y="812" class="label blue">SpO₂</text><text x="55" y="836" class="tiny muted">oxygenation trend</text>
+<polyline class="traceB" points="200,806 315,812 430,820 545,829 660,839 775,850 890,861 1005,872 1120,884"/>
+<text x="205" y="790" class="value blue">95%</text><text x="420" y="806" class="value blue">93%</text><text x="650" y="825" class="value blue">90%</text><text x="880" y="848" class="value blue">87%</text><text x="1080" y="872" class="value blue">84%</text>
+
+<text x="55" y="882" class="label green">tcCO₂</text><text x="55" y="906" class="tiny muted">ventilation trend</text>
+<polyline class="traceG" points="200,895 315,889 430,882 545,873 660,863 775,852 890,841 1005,830 1120,818"/>
+<text x="205" y="920" class="value green">46</text><text x="420" y="910" class="value green">48</text><text x="650" y="896" class="value green">51</text><text x="880" y="878" class="value green">54</text><text x="1080" y="850" class="value green">58 mm Hg</text>
+
+<rect x="35" y="960" width="545" height="465" rx="20" class="paper"/><rect x="35" y="960" width="545" height="58" rx="18" class="navy"/><text x="62" y="999" fill="#fff" class="h2">2) PATTERN RECOGNITION</text>
+<g class="small"><text x="65" y="1065" class="label navy">Breathing continues but is too shallow</text><text x="65" y="1095" class="muted">Airflow is present; amplitude and belt excursion are reduced.</text><line x1="65" y1="1120" x2="550" y2="1120" class="grid"/><text x="65" y="1160" class="label navy">Oxygen drifts downward</text><text x="65" y="1190" class="muted">SpO₂ shows a gradual, sustained decline during REM.</text><line x1="65" y1="1215" x2="550" y2="1215" class="grid"/><text x="65" y="1255" class="label navy">CO₂ drifts upward</text><text x="65" y="1285" class="muted">tcCO₂ rises progressively, supporting hypoventilation.</text><line x1="65" y1="1310" x2="550" y2="1310" class="grid"/><text x="65" y="1350" class="label navy">Do not let the AHI hide the pattern</text><text x="65" y="1380" class="muted">Obstructive events can coexist but may not explain sustained gas-exchange changes.</text></g>
+
+<rect x="610" y="960" width="555" height="465" rx="20" class="paper"/><rect x="610" y="960" width="555" height="58" rx="18" class="green"/><text x="638" y="999" fill="#fff" class="h2">3) FICTIONAL CHART CLUES</text>
+<g class="small"><text x="640" y="1060" class="label navy">BMI</text><text x="1125" y="1060" text-anchor="end" class="value">46 kg/m²</text><line x1="640" y1="1080" x2="1135" y2="1080" class="grid"/><text x="640" y="1120" class="label navy">Serum bicarbonate</text><text x="1125" y="1120" text-anchor="end" class="value">31 mEq/L</text><line x1="640" y1="1140" x2="1135" y2="1140" class="grid"/><text x="640" y="1180" class="label navy">Awake ABG pH</text><text x="1125" y="1180" text-anchor="end" class="value">7.37</text><text x="640" y="1220" class="label navy">PaCO₂</text><text x="1125" y="1220" text-anchor="end" class="value">49 mm Hg</text><text x="640" y="1260" class="label navy">PaO₂</text><text x="1125" y="1260" text-anchor="end" class="value">63 mm Hg</text><text x="640" y="1300" class="label navy">HCO₃⁻</text><text x="1125" y="1300" text-anchor="end" class="value">28 mEq/L</text><line x1="640" y1="1320" x2="1135" y2="1320" class="grid"/><text x="640" y="1360" class="label navy">Symptoms</text><text x="640" y="1390" class="muted">Morning headaches · hypersomnolence · loud snoring</text></g>
+
+<rect x="35" y="1450" width="1130" height="105" rx="18" fill="#fff7df" stroke="#d8b75e" stroke-width="2"/>
+<text x="600" y="1490" text-anchor="middle" class="label gold">AI-RENDERED EDUCATIONAL SIMULATION (IMITATION)</text>
+<text x="600" y="1522" text-anchor="middle" class="small navy">Not an actual patient recording, diagnostic report, or AASM Scoring Manual image.</text>
+<text x="600" y="1548" text-anchor="middle" class="tiny muted">Waveforms, trends, laboratory values, and patient details are fictional. Use the current AASM manual and local policy.</text>
+</svg>
