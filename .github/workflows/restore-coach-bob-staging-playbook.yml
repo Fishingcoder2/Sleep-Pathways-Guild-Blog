@@ -1,0 +1,43 @@
+name: Restore Coach Bob staging playbook
+
+on:
+  push:
+    branches:
+      - restore-coach-bob-staging-playbook-2026-07-30
+
+permissions:
+  contents: write
+
+jobs:
+  patch-downloads:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+        with:
+          ref: restore-coach-bob-staging-playbook-2026-07-30
+
+      - name: Repair staging playbook link
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("downloads/index.html")
+          text = path.read_text(encoding="utf-8")
+          old = '<article class="resource"><span>Visual</span><h2>Coach Bob’s Digital Sleep Staging Playbook</h2><a href="https://drive.usercontent.google.com/download?id=14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0&amp;export=download&amp;confirm=t" target="_blank" rel="noopener">Download original</a></article>'
+          new = '<article class="resource"><span>Visual</span><h2>Coach Bob’s Digital Sleep Staging Playbook</h2><a href="https://drive.google.com/file/d/14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0/view?usp=drivesdk" target="_blank" rel="noopener">Open restored playbook</a></article>'
+
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f"Expected exactly one matching playbook card, found {count}.")
+
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+      - name: Commit restored download link
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/index.html
+          git commit -m "Restore Coach Bob digital sleep staging playbook"
+          git push
