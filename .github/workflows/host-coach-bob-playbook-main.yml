@@ -1,0 +1,50 @@
+name: Host Coach Bob playbook on blog
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  repair-download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Download playbook into the blog repository
+        run: |
+          mkdir -p downloads/visuals
+          curl -L --fail --retry 3 --retry-delay 2 \
+            'https://drive.usercontent.google.com/download?id=14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0&export=download&confirm=t' \
+            -o downloads/visuals/coach-bob-digital-sleep-staging-playbook.jpg
+          test "$(wc -c < downloads/visuals/coach-bob-digital-sleep-staging-playbook.jpg)" -gt 100000
+          file downloads/visuals/coach-bob-digital-sleep-staging-playbook.jpg | grep -E 'JPEG|image data'
+
+      - name: Point the Downloads card to the local image
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('downloads/index.html')
+          text = path.read_text(encoding='utf-8')
+          old = '<article class="resource"><span>Visual</span><h2>Coach Bob’s Digital Sleep Staging Playbook</h2><a href="https://drive.google.com/file/d/14FNPSqYw7MHqlFMt5IUlvuUukaak0GL0/view?usp=drivesdk" target="_blank" rel="noopener">Open restored playbook</a></article>'
+          new = '<article class="resource"><span>Visual</span><h2>Coach Bob’s Digital Sleep Staging Playbook</h2><a href="/downloads/visuals/coach-bob-digital-sleep-staging-playbook.jpg" target="_blank" rel="noopener">Open playbook</a></article>'
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one matching playbook card, found {count}.')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit locally hosted playbook
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add downloads/index.html downloads/visuals/coach-bob-digital-sleep-staging-playbook.jpg
+          git commit -m "Host Coach Bob staging playbook on the blog"
+          git push
