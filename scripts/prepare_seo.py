@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Normalize critical metadata in the generated static blog before audit/deploy."""
+"""Normalize critical metadata and public contact copy before audit/deploy."""
 from __future__ import annotations
 
 import re
@@ -10,6 +10,8 @@ META_DESCRIPTION = re.compile(
     flags=re.IGNORECASE,
 )
 CONTENT_ATTR = re.compile(r"\bcontent\s*=\s*([\"'])(.*?)\1", flags=re.IGNORECASE | re.DOTALL)
+OLD_EMAIL = "admin@sleeppathsguild.com"
+CURRENT_EMAIL = "admin@sleeppathwaysguild.com"
 
 DESCRIPTION_OVERRIDES = {
     "2026/07/shift-report-growing-sleep-tech-newsroom.html": (
@@ -38,46 +40,52 @@ def replace_content(tag: str, value: str) -> str:
     return tag[:-1] + f' content="{escaped}">' if tag.endswith(">") else tag
 
 
-def normalize(path: Path) -> tuple[bool, int]:
+def normalize(path: Path) -> tuple[bool, int, int]:
     text = path.read_text(encoding="utf-8", errors="replace")
-    matches = list(META_DESCRIPTION.finditer(text))
-    if not matches:
-        return False, 0
-
     changed = False
     removed = 0
-    if len(matches) > 1:
-        for match in reversed(matches[1:]):
-            text = text[: match.start()] + text[match.end() :]
-            removed += 1
+    email_replacements = text.casefold().count(OLD_EMAIL.casefold())
+    if email_replacements:
+        text = re.sub(re.escape(OLD_EMAIL), CURRENT_EMAIL, text, flags=re.IGNORECASE)
         changed = True
 
-    override = DESCRIPTION_OVERRIDES.get(path.as_posix())
-    if override:
-        first = META_DESCRIPTION.search(text)
-        if first:
-            replacement = replace_content(first.group(0), override)
-            if replacement != first.group(0):
-                text = text[: first.start()] + replacement + text[first.end() :]
-                changed = True
+    matches = list(META_DESCRIPTION.finditer(text))
+    if matches:
+        if len(matches) > 1:
+            for match in reversed(matches[1:]):
+                text = text[: match.start()] + text[match.end() :]
+                removed += 1
+            changed = True
+
+        override = DESCRIPTION_OVERRIDES.get(path.as_posix())
+        if override:
+            first = META_DESCRIPTION.search(text)
+            if first:
+                replacement = replace_content(first.group(0), override)
+                if replacement != first.group(0):
+                    text = text[: first.start()] + replacement + text[first.end() :]
+                    changed = True
 
     if changed:
         path.write_text(text, encoding="utf-8")
-    return changed, removed
+    return changed, removed, email_replacements
 
 
 def main() -> None:
     changed_files = 0
     removed_tags = 0
+    corrected_emails = 0
     for path in sorted(Path(".").rglob("*.html")):
         if ".git" in path.parts:
             continue
-        changed, removed = normalize(path)
+        changed, removed, emails = normalize(path)
         changed_files += int(changed)
         removed_tags += removed
+        corrected_emails += emails
     print(
-        f"SEO metadata normalized in {changed_files} file(s); "
-        f"removed {removed_tags} duplicate description tag(s)."
+        f"SEO normalization changed {changed_files} file(s); "
+        f"removed {removed_tags} duplicate description tag(s); "
+        f"corrected {corrected_emails} obsolete email reference(s)."
     )
 
 
