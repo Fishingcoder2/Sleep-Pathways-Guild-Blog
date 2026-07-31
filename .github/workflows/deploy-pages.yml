@@ -25,6 +25,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Normalize critical SEO metadata
+        run: python scripts/prepare_seo.py
+
       - name: Add latest editorial to blog listings
         run: python scripts/inject-latest-post.py
 
