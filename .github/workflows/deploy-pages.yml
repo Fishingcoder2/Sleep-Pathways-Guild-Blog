@@ -25,6 +25,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Add latest editorial to blog listings
+        run: python scripts/inject-latest-post.py
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
