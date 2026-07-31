@@ -25,11 +25,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Normalize critical SEO metadata
+      - name: Normalize critical SEO and contact metadata
         run: python scripts/prepare_seo.py
 
-      - name: Add latest editorial to blog listings
+      - name: Render current release and editorial listings
         run: python scripts/inject-latest-post.py
+
+      - name: Verify deployed public content
+        run: python scripts/content_integrity.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
