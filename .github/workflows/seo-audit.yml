@@ -17,6 +17,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Normalize critical metadata
+        run: python scripts/prepare_seo.py
+
       - name: Audit sitemap-listed pages
         run: python scripts/seo_audit.py --site-url https://blog.sleeppathwaysguild.com
 
