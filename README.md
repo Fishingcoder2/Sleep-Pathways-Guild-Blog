@@ -15,3 +15,9 @@ The workflow at `.github/workflows/deploy-pages.yml` publishes the repository ro
 In repository **Settings → Pages**, the publishing source must be set to **GitHub Actions**. The custom domain should remain `blog.sleeppathwaysguild.com` with HTTPS enforcement enabled after DNS validation.
 
 After a deployment, verify the homepage, topic hubs, downloads, bookstore, `robots.txt`, and `sitemap.xml` on the public domain.
+
+## Contact
+
+Official Sleep Pathways Guild email: `admin@sleeppathwaysguild.com`
+
+Verified August 3, 2026. Do not use `admin@sleeppathsguild.com` in blog pages, article templates, metadata, or public contact blocks.
