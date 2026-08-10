@@ -15,11 +15,18 @@ POSTS = [
         "title": "Back-to-School Guide 2026: Sleep Technology Education Pathways",
         "summary": "A practical 2026 guide to ASTEP, STAR, BRPT credential eligibility, accredited sleep technology programs, degree options, professional memberships, and choosing an education path that fits your goals.",
     },
+    {
+        "id": "brpt-new-management-2026",
+        "path": "/2026/08/brpt-new-management-rpsgt-candidates-2026.html",
+        "date": "August 10, 2026",
+        "title": "BRPT New Management: What RPSGT Candidates Should Know",
+        "summary": "BRPT has selected Association Headquarters as its new management firm. Tracy Frazier explains what the 2026 transition means—and does not mean—for RPSGT candidates and sleep technologists.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-08-10T15:23:00Z"
+LATEST_BUILD = "2026-08-10T17:15:00Z"
 LATEST_LASTMOD = "2026-08-10"
 
 
