@@ -17,6 +17,11 @@ POSTS = [
     },
 ]
 
+LATEST = POSTS[-1]
+LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
+LATEST_BUILD = "2026-08-10T15:23:00Z"
+LATEST_LASTMOD = "2026-08-10"
+
 
 def home_card(post):
     return (
@@ -55,6 +60,52 @@ def prepend_cards(path: str, card_factory) -> None:
     file_path.write_text(text, encoding="utf-8")
 
 
+def update_feed() -> None:
+    path = Path("feed.xml")
+    text = path.read_text(encoding="utf-8")
+    if LATEST_URL not in text:
+        item = (
+            "  <item>\n"
+            f"    <title>{LATEST['title']} | Sleep Pathways Guild</title>\n"
+            f"    <link>{LATEST_URL}</link>\n"
+            f"    <guid isPermaLink=\"true\">{LATEST_URL}</guid>\n"
+            f"    <pubDate>{LATEST_BUILD}</pubDate>\n"
+            f"    <description>{LATEST['summary']}</description>\n"
+            "  </item>\n"
+        )
+        marker = "  <item>\n"
+        if marker not in text:
+            raise RuntimeError("Could not find RSS item marker in feed.xml")
+        text = text.replace(marker, item + marker, 1)
+
+    import re
+    text = re.sub(r"<lastBuildDate>.*?</lastBuildDate>", f"<lastBuildDate>{LATEST_BUILD}</lastBuildDate>", text, count=1)
+    path.write_text(text, encoding="utf-8")
+
+
+def update_sitemap() -> None:
+    path = Path("sitemap.xml")
+    text = path.read_text(encoding="utf-8")
+    if LATEST_URL not in text:
+        marker = "  <url><loc>https://blog.sleeppathwaysguild.com/</loc>"
+        entry = f"  <url><loc>{LATEST_URL}</loc><lastmod>{LATEST_LASTMOD}</lastmod></url>\n"
+        pos = text.find("\n", text.find(marker))
+        if pos == -1:
+            raise RuntimeError("Could not find sitemap homepage entry")
+        text = text[:pos + 1] + entry + text[pos + 1:]
+
+    import re
+    text = re.sub(
+        r"(<url><loc>https://blog\.sleeppathwaysguild\.com/</loc><lastmod>).*?(</lastmod></url>)",
+        rf"\g<1>{LATEST_LASTMOD}\g<2>",
+        text,
+        count=1,
+    )
+    path.write_text(text, encoding="utf-8")
+
+
 prepend_cards("index.html", home_card)
 prepend_cards("archive/index.html", archive_card)
-print("Latest Sleep Pathways Guild posts added to homepage and archive listings.")
+update_feed()
+update_sitemap()
+print("Latest Sleep Pathways Guild post added to listings, RSS feed, and sitemap.")
