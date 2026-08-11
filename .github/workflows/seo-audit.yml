@@ -1,4 +1,4 @@
-name: SEO audit
+name: SEO and link audit
 
 on:
   pull_request:
@@ -20,12 +20,22 @@ jobs:
       - name: Normalize critical metadata
         run: python scripts/prepare_seo.py
 
-      - name: Audit sitemap-listed pages
+      - name: Audit sitemap-listed SEO
         run: python scripts/seo_audit.py --site-url https://blog.sleeppathwaysguild.com
 
-      - name: Upload SEO report
+      - name: Audit internal and live links
+        run: python scripts/link_audit.py --site-url https://blog.sleeppathwaysguild.com --live
+
+      - name: Inventory downloads hub
+        if: always()
+        run: python scripts/download_link_inventory.py
+
+      - name: Upload audit reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: blog-seo-audit-report
-          path: seo-audit-report.txt
+          name: blog-audit-reports
+          path: |
+            seo-audit-report.txt
+            link-audit-report.txt
+            download-link-inventory.txt
