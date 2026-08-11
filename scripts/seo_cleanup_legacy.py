@@ -63,8 +63,17 @@ H1_CLOSE_RE = re.compile(r"</h1\s*>", re.IGNORECASE)
 
 
 def replace_title(text: str, title: str) -> str:
+    """Set one reviewed document title and remove duplicate legacy title tags."""
     escaped = title.replace("&", "&amp;")
-    return TITLE_RE.sub(f"<title>{escaped}</title>", text, count=1)
+    matches = list(TITLE_RE.finditer(text))
+    if not matches:
+        return text
+
+    first = matches[0]
+    text = text[: first.start()] + f"<title>{escaped}</title>" + text[first.end() :]
+    # Old migrated pages can contain a second document <title>. Remove any
+    # remaining title tags so parsers and search engines see one clear title.
+    return TITLE_RE.sub("", text)
 
 
 def replace_description(text: str, description: str) -> str:
