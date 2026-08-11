@@ -28,6 +28,9 @@ jobs:
       - name: Normalize critical SEO metadata
         run: python scripts/prepare_seo.py
 
+      - name: Clean legacy SEO markup
+        run: python scripts/seo_cleanup_legacy.py
+
       - name: Add latest editorial to blog listings
         run: python scripts/inject-latest-post.py
 
