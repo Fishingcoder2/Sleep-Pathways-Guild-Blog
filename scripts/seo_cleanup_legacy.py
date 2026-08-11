@@ -68,12 +68,9 @@ def replace_title(text: str, title: str) -> str:
     matches = list(TITLE_RE.finditer(text))
     if not matches:
         return text
-
     first = matches[0]
-    text = text[: first.start()] + f"<title>{escaped}</title>" + text[first.end() :]
-    # Old migrated pages can contain a second document <title>. Remove any
-    # remaining title tags so parsers and search engines see one clear title.
-    return TITLE_RE.sub("", text)
+    suffix_without_extra_titles = TITLE_RE.sub("", text[first.end() :])
+    return text[: first.start()] + f"<title>{escaped}</title>" + suffix_without_extra_titles
 
 
 def replace_description(text: str, description: str) -> str:
@@ -83,7 +80,7 @@ def replace_description(text: str, description: str) -> str:
         .replace("<", "&lt;")
         .replace(">", "&gt;")
     )
-    replacement = f'<meta name="description" content="{escaped}">' 
+    replacement = f'<meta name="description" content="{escaped}">'
     return META_DESCRIPTION_RE.sub(replacement, text, count=1)
 
 
@@ -116,7 +113,6 @@ def main() -> int:
     changed_files = 0
     demoted = 0
 
-    # Sitemap-listed HTML is the public SEO surface; limit changes to it.
     html_files = sorted(
         p for p in ROOT.rglob("*.html")
         if ".git" not in p.parts and "tools" not in p.parts
