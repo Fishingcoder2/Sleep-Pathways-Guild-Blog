@@ -20,6 +20,9 @@ jobs:
       - name: Normalize critical metadata
         run: python scripts/prepare_seo.py
 
+      - name: Clean legacy SEO markup
+        run: python scripts/seo_cleanup_legacy.py
+
       - name: Audit sitemap-listed SEO
         run: python scripts/seo_audit.py --site-url https://blog.sleeppathwaysguild.com
 
