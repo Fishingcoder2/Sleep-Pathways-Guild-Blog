@@ -22,12 +22,19 @@ POSTS = [
         "title": "BRPT New Management: What RPSGT Candidates Should Know",
         "summary": "BRPT has selected Association Headquarters as its new management firm. Tracy Frazier explains what the 2026 transition means—and does not mean—for RPSGT candidates and sleep technologists.",
     },
+    {
+        "id": "shift-report-august-2026",
+        "path": "/2026/08/whats-new-shift-report-august-2026.html",
+        "date": "August 11, 2026",
+        "title": "What's New on The Shift Report: August 2026",
+        "summary": "New Shift Report resources for sleep technologists covering RPSGT recertification, a CMS sleep-study fact check, verified AAST member-free CEC opportunities, and autoscoring with human quality review.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-08-10T17:15:00Z"
-LATEST_LASTMOD = "2026-08-10"
+LATEST_BUILD = "2026-08-11T14:00:00Z"
+LATEST_LASTMOD = "2026-08-11"
 
 
 def home_card(post):
