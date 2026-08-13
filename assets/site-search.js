@@ -52,7 +52,7 @@
     if(subtitle)copy.appendChild(subtitle);
     const badge=document.createElement('img');
     badge.className='spg-brand-badge';
-    badge.src='https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png';
+    badge.src='/assets/blogger/badge-9316.png';
     badge.alt='Sleep Pathways Guild badge logo';
     badge.width=60;
     badge.height=60;
