@@ -29,12 +29,19 @@ POSTS = [
         "title": "What's New on The Shift Report: August 2026",
         "summary": "New Shift Report resources for sleep technologists covering RPSGT recertification, a CMS sleep-study fact check, verified AAST member-free CEC opportunities, and autoscoring with human quality review.",
     },
+    {
+        "id": "central-sleep-apnea-practical-notes",
+        "path": "/downloads/mini-lessons/central-sleep-apnea/",
+        "date": "September 4, 2026",
+        "title": "Central Sleep Apnea &amp; TECSA — Practical Notes in Polysomnography",
+        "summary": "A free case-based Sleep Pathways Guild lesson on central sleep apnea, treatment-emergent central sleep apnea, mixed apnea, periodic breathing, Cheyne-Stokes breathing, PSG recognition, PAP response, and sleep technologist practice.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-08-11T14:00:00Z"
-LATEST_LASTMOD = "2026-08-11"
+LATEST_BUILD = "2026-09-04T12:00:00Z"
+LATEST_LASTMOD = "2026-09-04"
 
 
 def home_card(post):
@@ -118,8 +125,39 @@ def update_sitemap() -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def fix_csa_lesson_branding() -> None:
+    """Use the official Sleep Pathways Guild badge in the CSA lesson header."""
+    path = Path("downloads/mini-lessons/central-sleep-apnea/index.html")
+    if not path.exists():
+        return
+
+    text = path.read_text(encoding="utf-8")
+    old_css = ".brandmark{width:54px;height:54px;border-radius:50%;background:var(--navy);color:#fff;border:5px solid #bfe6ea;display:grid;place-items:center;font-size:.8rem;text-align:center;line-height:1.05}"
+    new_css = ".brandmark{width:68px;height:68px;object-fit:contain;display:block;flex:0 0 auto}"
+    text = text.replace(old_css, new_css)
+
+    old_mark = '<div class="brandmark">SLEEP<br>PATHWAYS</div>'
+    new_mark = '<img class="brandmark" src="https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png" alt="Sleep Pathways Guild badge" width="68" height="68">'
+    text = text.replace(old_mark, new_mark)
+
+    og_anchor = '<meta property="og:type" content="article"><meta property="og:title" content="Central Sleep Apnea & TECSA — Practical Notes in Polysomnography"><meta property="og:description" content="Free case-based PSG lesson from Sleep Pathways Guild.">'
+    if 'property="og:image"' not in text and og_anchor in text:
+        text = text.replace(
+            og_anchor,
+            og_anchor + '\n<meta property="og:image" content="https://sleeppathwaysguild.com/assets/branding/spg-guild-badge.png"><meta property="og:image:alt" content="Sleep Pathways Guild badge">',
+            1,
+        )
+
+    canonical = '<link rel="canonical" href="https://blog.sleeppathwaysguild.com/downloads/mini-lessons/central-sleep-apnea/">'
+    if 'rel="canonical"' not in text:
+        text = text.replace('</title>', '</title>\n' + canonical, 1)
+
+    path.write_text(text, encoding="utf-8")
+
+
+fix_csa_lesson_branding()
 prepend_cards("index.html", home_card)
 prepend_cards("archive/index.html", archive_card)
 update_feed()
 update_sitemap()
-print("Latest Sleep Pathways Guild post added to listings, RSS feed, and sitemap.")
+print("Latest Sleep Pathways Guild post added to listings, RSS feed, sitemap, and CSA lesson branding normalized.")
