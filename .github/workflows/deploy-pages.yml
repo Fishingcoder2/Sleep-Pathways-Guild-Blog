@@ -34,6 +34,9 @@ jobs:
       - name: Add latest editorial to blog listings
         run: python scripts/inject-latest-post.py
 
+      - name: Enforce official Sleep Pathways Guild badge
+        run: python scripts/fix_guild_badge.py
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
