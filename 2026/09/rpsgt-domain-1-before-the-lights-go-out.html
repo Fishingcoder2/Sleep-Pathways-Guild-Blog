@@ -38,7 +38,7 @@
 .spg-hero-brand img{width:68px;height:68px;object-fit:contain;border-radius:50%;background:#fff;padding:3px;box-shadow:0 7px 20px rgba(0,0,0,.18)}
 .spg-lesson-hero .spg-hero-brand strong{display:block;font-size:.86rem;letter-spacing:.08em;text-transform:uppercase;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;text-shadow:0 1px 2px rgba(0,0,0,.38)}
 .spg-lesson-hero .spg-hero-brand span{display:block;font-size:.82rem;color:#e9f5fb!important;-webkit-text-fill-color:#e9f5fb!important;text-shadow:0 1px 2px rgba(0,0,0,.38)}
-.spg-lesson-hero h1{margin:6px 0 10px;font-size:clamp(2rem,5vw,3.35rem);line-height:1.06;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;text-shadow:0 2px 4px rgba(0,0,0,.36)}
+.spg-hero-title{display:block;margin:18px 0 16px;padding:14px 16px;border-left:6px solid #d6ad45;border-radius:0 14px 14px 0;background:rgba(3,18,34,.52);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,5vw,3.35rem);font-weight:900;line-height:1.06;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;text-shadow:0 2px 5px rgba(0,0,0,.55);letter-spacing:-.02em}
 .spg-lesson-hero p{max-width:76ch;margin:.55rem 0;color:#f5fbff!important;-webkit-text-fill-color:#f5fbff!important;text-shadow:0 1px 2px rgba(0,0,0,.34)}
 .spg-lesson-hero p strong{color:#ffffff!important;-webkit-text-fill-color:#ffffff!important}
 .spg-badges{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
@@ -102,8 +102,8 @@
 .spg-resource small{display:block;color:#5b6675;margin-top:4px}
 .spg-disclaimer{font-size:.92rem;color:#4b5968;background:#f8fafc;border-top:3px solid #102f5c;border-radius:14px;padding:17px;margin-top:22px}
 .spg-moonline{text-align:center;color:#0b7f84;font-weight:900;letter-spacing:.22rem;margin:20px 0}
-@media(max-width:720px){.spg-lesson-hero{padding:22px;background:linear-gradient(155deg,#071f38 0%,#103b67 62%,#086f78 100%)}.spg-lesson-hero h1{font-size:clamp(2rem,10vw,2.7rem);line-height:1.04}.spg-lesson-hero p{font-size:1rem;line-height:1.58}.spg-hero-brand img{width:58px;height:58px}.spg-flow{grid-template-columns:1fr}.spg-panel{padding:17px}.spg-progress-wrap{top:66px}.spg-hero-actions{display:grid}.spg-btn{width:100%}}
-@media print{.spg-progress-wrap,.spg-hero-actions,.spg-btn{display:none!important}.spg-question,.spg-panel,.spg-flash,.spg-term,.spg-scenario{break-inside:avoid}.spg-lesson-hero{background:#fff!important;color:#000!important;border:2px solid #102f5c}.spg-lesson-hero h1,.spg-lesson-hero p{color:#000!important}}
+@media(max-width:720px){.spg-lesson-hero{padding:22px;background:linear-gradient(155deg,#071f38 0%,#103b67 62%,#086f78 100%)}.spg-hero-title{font-size:clamp(2.05rem,10vw,2.65rem);line-height:1.05;padding:13px 14px;margin:18px 0 16px}.spg-lesson-hero p{font-size:1rem;line-height:1.58}.spg-hero-brand img{width:58px;height:58px}.spg-flow{grid-template-columns:1fr}.spg-panel{padding:17px}.spg-progress-wrap{top:66px}.spg-hero-actions{display:grid}.spg-btn{width:100%}}
+@media print{.spg-progress-wrap,.spg-hero-actions,.spg-btn{display:none!important}.spg-question,.spg-panel,.spg-flash,.spg-term,.spg-scenario{break-inside:avoid}.spg-lesson-hero{background:#fff!important;color:#000!important;border:2px solid #102f5c}.spg-hero-title,.spg-lesson-hero p{color:#000!important;-webkit-text-fill-color:#000!important}.spg-hero-title{background:#fff!important;border-left:6px solid #d6ad45}}
 </style>
 
 <div class="spg-post">
@@ -117,7 +117,7 @@
       <span class="spg-badge">20% OF CURRENT RPSGT BLUEPRINT</span>
       <span class="spg-badge">50 STUDY POINTS</span>
     </div>
-    <h1>Before the Lights Go Out</h1>
+    <div class="spg-hero-title" role="heading" aria-level="2">Before the Lights Go Out</div>
     <p><strong>RPSGT Domain 1:</strong> Clinical Overview, Education, and Patient Support.</p>
     <p>Learn how to assess the patient, recognize important clinical clues, teach clearly, support PAP therapy, and turn missed questions into a blueprint-based repair plan.</p>
     <div class="spg-hero-actions">
