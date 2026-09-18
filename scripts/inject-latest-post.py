@@ -36,12 +36,19 @@ POSTS = [
         "title": "Central Sleep Apnea &amp; TECSA — Practical Notes in Polysomnography",
         "summary": "A free case-based Sleep Pathways Guild lesson on central sleep apnea, treatment-emergent central sleep apnea, mixed apnea, periodic breathing, Cheyne-Stokes breathing, PSG recognition, PAP response, and sleep technologist practice.",
     },
+    {
+        "id": "rpsgt-domain1-before-lights-out-2026",
+        "path": "/2026/09/rpsgt-domain-1-before-the-lights-go-out.html",
+        "date": "September 18, 2026",
+        "title": "Before the Lights Go Out: RPSGT Domain 1 Interactive Study Lesson",
+        "summary": "A full interactive RPSGT Domain 1 lesson on clinical assessment, patient education, ESS, STOP-BANG, PAP support, 25 practice questions, flashcards, glossary terms, clinical scenarios, and blueprint-based weak-area tracking.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-09-04T12:00:00Z"
-LATEST_LASTMOD = "2026-09-04"
+LATEST_BUILD = "2026-09-18T13:09:00Z"
+LATEST_LASTMOD = "2026-09-18"
 
 
 def home_card(post):
