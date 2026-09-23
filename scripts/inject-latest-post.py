@@ -85,13 +85,21 @@ def prepend_cards(path: str, card_factory) -> None:
     if marker not in text:
         raise RuntimeError(f"Could not find article-grid marker in {path}")
 
-    # Insert oldest first because each replacement prepends at the marker.
-    # The final rendered order is therefore newest first.
-    for post in POSTS:
-        if post["path"] in text:
-            continue
-        text = text.replace(marker, marker + card_factory(post), 1)
+    # Rebuild all script-managed cards every deployment so partial prior
+    # updates cannot leave the newest post below an older injected card.
+    import re
+    managed_ids = {post["id"] for post in POSTS}
+    pattern = re.compile(
+        r'<article class="card" data-spg-post="([^"]+)">.*?</article>',
+        re.DOTALL,
+    )
+    text = pattern.sub(
+        lambda m: "" if m.group(1) in managed_ids else m.group(0),
+        text,
+    )
 
+    cards = "".join(card_factory(post) for post in reversed(POSTS))
+    text = text.replace(marker, marker + cards, 1)
     file_path.write_text(text, encoding="utf-8")
 
 
