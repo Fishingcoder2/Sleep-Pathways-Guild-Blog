@@ -453,4 +453,120 @@ footer{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--muted)}
   const scenarios=[{"title": "The shared reference", "task": "D2-A5/C2", "prompt": "F3-M2, C3-M2, and O1-M2 deteriorate simultaneously while comparable M1-referenced channels remain usable. Use the Guild Reasoning Check to decide what you would investigate first and why.", "reason": "Start with M2 and its signal pathway. WHO/WHAT: M2. WHEN: the channels deteriorated simultaneously. WHERE: every affected derivation shares M2. WHY: a shared-component problem explains the pattern. TO WHAT EXTENT: several EEG derivations are affected. HOW: evaluate the electrode, connection, impedance, lead, and related system pathway."}, {"title": "The pretty EEG", "task": "D2-C2/C5/C7", "prompt": "A technologist changes several filters. A distorted EEG suddenly looks cleaner, but the electrode remains poorly attached. Did the technologist correct the source of the problem? Explain why.", "reason": "No. A prettier tracing does not prove that the electrode problem was corrected. The filter changed what you see; it did not necessarily repair what you record. Fix the source, not just the picture."}, {"title": "The HSAT with missing airflow", "task": "D2-B5/C3", "prompt": "Oximetry and respiratory effort remain available, but airflow is absent for a substantial portion of the recording. What should be documented, and how can the signal loss affect technical adequacy?", "reason": "Document the duration and timing of the airflow loss, what signals remained, and the potential effect on technical adequacy and interpretation. Do not invent missing airflow information from other channels."}, {"title": "The sleeping patient and the bad electrode", "task": "D2-A5/C3", "prompt": "One EEG electrode fails during stable sleep, but an acceptable alternate derivation remains available. What factors determine whether correction is immediately necessary?", "reason": "Consider the importance of the lost signal, the acceptable alternate derivation, the amount of data at risk, patient sleep disruption, technical adequacy, and safety. There is not one automatic response for every circumstance."}, {"title": "The vanishing CO₂", "task": "D2-C3/C4", "prompt": "The capnography waveform disappears while airflow, respiratory effort, SpO₂, and the patient's appearance remain stable. Where should troubleshooting begin?", "reason": "Start with the capnography signal pathway. Consider the cannula, sampling line, moisture, obstruction, connections, and equipment. The rest of the physiology is an important comparison."}];
   const repairSources={"D2-A4": "Mattice et al. (2020), Chapter 34 — Digital Polysomnography, pp. 386–398; filters, pp. 391–393.", "D2-A5": "Mattice et al. (2020), Chapter 35 — Recording the Biopotentials of Sleep, pp. 399–424; Chapter 37 — Polysomnographic Recording Procedures, pp. 441–456.", "D2-A6": "Mattice et al. (2020), infection control, pp. 325–328.", "D2-B2": "Mattice et al. (2020), Chapter 60 — Pediatric Polysomnography, pp. 706–715.", "D2-B3": "Mattice et al. (2020), Chapter 43, pp. 545–551; Krahn et al. (2021), doi:10.5664/jcsm.9620.", "D2-B4": "Mattice et al. (2020), Chapter 43, pp. 545–551; Krahn et al. (2021), doi:10.5664/jcsm.9620.", "D2-B5": "Mattice et al. (2020), Chapter 44 — Home Sleep Apnea Testing, pp. 552–570; Kapur et al. (2017), doi:10.5664/jcsm.6506.", "D2-C2": "Mattice et al. (2020), Chapter 37: artifact recognition/troubleshooting, pp. 447–455.", "D2-C3": "Mattice et al. (2020), Chapter 37 — Polysomnographic Recording Procedures, pp. 441–456.", "D2-C4": "Review the current AASM Scoring Manual 3 technical/scoring sections relevant to the signal or event, plus Mattice et al. (2020) as supporting text.", "D2-C5": "Mattice et al. (2020), Chapter 34: filters, pp. 391–393; Chapter 37, pp. 447–455.", "D2-C6": "Mattice et al. (2020), Chapter 35: physiologic calibration, pp. 404–410.", "D2-C7": "Mattice et al. (2020), Chapter 35 — Recording the Biopotentials of Sleep.", "Exam strategy": "BRPT RPSGT Handbook — review the one-best-answer format and BRPT guidance for items emphasizing RECOMMENDED."};
   const defaultState={complete:{},answers:{},misses:{},missedIds:[]};
-  let s
+  let state=loadState();
+
+  function loadState(){
+    try{return Object.assign({},defaultState,JSON.parse(localStorage.getItem(KEY)||"{}"));}catch(e){return JSON.parse(JSON.stringify(defaultState));}
+  }
+  function save(){localStorage.setItem(KEY,JSON.stringify(state));renderProgress();renderRepair();}
+  function mark(key){state.complete[key]=true;save();}
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+  function renderQuestions(){
+    const host=document.getElementById("spgQuestions");
+    host.innerHTML=questions.map(q=>{
+      const answered=state.answers[q.id];
+      const options=q.o.map((opt,i)=>'<label class="spg-option"><input type="radio" name="q'+q.id+'" value="'+i+'" '+(answered&&answered.choice===i?'checked':'')+' '+(answered?'disabled':'')+'> <span><strong>'+String.fromCharCode(65+i)+'.</strong> '+esc(opt)+'</span></label>').join("");
+      const tagAc=q.ac?'<span class="spg-tag acronym">Acronym: '+esc(q.ac)+'</span>':"";
+      const feedback=answered?feedbackHtml(q,answered.choice):"";
+      return '<article class="spg-question" id="spg-q-'+q.id+'"><h3>'+q.id+'. '+esc(q.q)+'</h3><div class="spg-tags"><span class="spg-tag">'+esc(q.task)+'</span>'+tagAc+'</div><div class="spg-options">'+options+'</div><button class="spg-btn outline small" data-check="'+q.id+'" '+(answered?'disabled':'')+'>Check answer</button><div class="spg-feedback '+(answered?(answered.choice===q.a?'show good':'show review'):'')+'" id="spg-feedback-'+q.id+'">'+feedback+'</div></article>';
+    }).join("");
+  }
+
+  function feedbackHtml(q,choice){
+    const good=choice===q.a;
+    const sourceBits=(q.tasks||[]).map(t=>repairSources[t]).filter(Boolean);
+    const study=sourceBits.length?'<p><strong>Where to study next:</strong> '+esc([...new Set(sourceBits)].join(" "))+'</p>':"";
+    return '<strong>'+(good?'Correct.':'Repair this one.')+'</strong><p><strong>Answer: '+String.fromCharCode(65+q.a)+'. '+esc(q.o[q.a])+'</strong></p><p>'+esc(q.r)+'</p><p><strong>Blueprint repair:</strong> '+esc(q.task)+'</p>'+study;
+  }
+
+  function renderFlashcards(){
+    document.getElementById("spgFlashcards").innerHTML=flashcards.map((f,i)=>'<details class="spg-flash" data-complete="f'+(i+1)+'"><summary>Flashcard '+(i+1)+': '+esc(f[0])+'</summary><div><strong>Back:</strong> '+esc(f[1])+'</div></details>').join("");
+  }
+
+  function renderGlossary(){
+    document.getElementById("spgGlossary").innerHTML=glossary.map((g,i)=>'<details class="spg-term" data-complete="g'+(i+1)+'"><summary>'+(i+1)+'. '+esc(g[0])+'</summary><div>'+esc(g[1])+'</div></details>').join("");
+  }
+
+  function renderScenarios(){
+    document.getElementById("spgScenarios").innerHTML=scenarios.map((s,i)=>'<article class="spg-scenario" id="spg-s-'+(i+1)+'"><summary style="list-style:none;padding:14px 14px 4px;cursor:default">'+(i+1)+'. '+esc(s.title)+' <span class="spg-tag">'+esc(s.task)+'</span></summary><div><p>'+esc(s.prompt)+'</p><label><strong>Your reasoning:</strong><textarea aria-label="Your reasoning for scenario '+(i+1)+'" placeholder="Use WHO • WHAT • WHEN • WHERE • WHY • TO WHAT EXTENT • HOW..."></textarea></label><details class="spg-reveal" data-complete="s'+(i+1)+'"><summary>Reveal the clinical reasoning</summary><div>'+esc(s.reason)+'</div></details></div></article>').join("");
+  }
+
+  function renderProgress(){
+    const count=Object.keys(state.complete||{}).filter(k=>state.complete[k]).length;
+    document.getElementById("spgProgressText").textContent=count+" / 50 completed";
+    document.getElementById("spgProgressBar").style.width=Math.min(100,(count/50)*100)+"%";
+  }
+
+  function renderRepair(){
+    const grid=document.getElementById("spgRepairGrid");
+    const misses=state.misses||{};
+    const answered=Object.keys(state.answers||{}).length;
+    document.getElementById("spgRepairIntro").textContent=answered?("You have answered "+answered+" of 25 questions. First-attempt misses are grouped below."):"Complete questions to build your Domain 2 repair list.";
+    const active=Object.keys(misses).filter(t=>(misses[t]||0)>0).sort((a,b)=>(misses[b]||0)-(misses[a]||0));
+    if(active.length){
+      grid.innerHTML=active.map(t=>'<div class="spg-repair-card"><strong>'+esc(t)+'</strong><span>'+(misses[t]||0)+' first-attempt miss'+((misses[t]||0)===1?'':'es')+'</span>'+(repairSources[t]?'<small>'+esc(repairSources[t])+'</small>':'')+'</div>').join("");
+    }else{
+      grid.innerHTML='<div class="spg-repair-card"><strong>No repair flags yet</strong><span>Missed questions will appear here with targeted review sources.</span></div>';
+    }
+    const missedIds=state.missedIds||[];
+    document.getElementById("spgMissedLinks").innerHTML=missedIds.length?'<p><strong>Review missed questions:</strong> '+missedIds.map(id=>'<a href="#spg-q-'+id+'">#'+id+'</a>').join(' • ')+'</p>':'';
+  }
+
+  document.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-check]");
+    if(!btn)return;
+    const id=Number(btn.dataset.check);
+    const q=questions.find(x=>x.id===id);
+    const selected=document.querySelector('input[name="q'+id+'"]:checked');
+    if(!selected){alert("Choose an answer first.");return;}
+    const choice=Number(selected.value);
+    if(!state.answers[id]){
+      state.answers[id]={choice};
+      state.complete["q"+id]=true;
+      if(choice!==q.a){
+        (q.tasks||[]).forEach(task=>{state.misses[task]=(state.misses[task]||0)+1;});
+        state.missedIds=(state.missedIds||[]).concat(id);
+      }
+      save();
+    }
+    renderQuestions();
+    document.getElementById("spg-q-"+id).scrollIntoView({block:"center"});
+  });
+
+  document.addEventListener("toggle",e=>{
+    const d=e.target;
+    if(!(d instanceof HTMLDetailsElement)||!d.open||!d.dataset.complete)return;
+    if(!state.complete[d.dataset.complete])mark(d.dataset.complete);
+  },true);
+
+  const shareBtn=document.getElementById("spgShareLesson");
+  if(shareBtn){
+    shareBtn.addEventListener("click",async()=>{
+      const shareData={title:"Can You Trust the Signal? | RPSGT Domain 2 Interactive Study Lesson",text:"Free interactive RPSGT Domain 2 study lesson.",url:window.location.href};
+      try{
+        if(navigator.share){await navigator.share(shareData);}
+        else{await navigator.clipboard.writeText(window.location.href);shareBtn.textContent="Link copied";setTimeout(()=>shareBtn.textContent="Share lesson",1800);}
+      }catch(e){}
+    });
+  }
+
+  const menu=document.querySelector(".menu-toggle"),nav=document.querySelector(".site-nav");
+  if(menu&&nav){menu.addEventListener("click",()=>{const open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",open?"true":"false");});}
+
+  document.getElementById("spgReset").addEventListener("click",()=>{
+    if(!confirm("Reset all saved progress for this lesson?"))return;
+    localStorage.removeItem(KEY);state=JSON.parse(JSON.stringify(defaultState));
+    renderQuestions();renderFlashcards();renderGlossary();renderScenarios();renderProgress();renderRepair();
+  });
+
+  renderQuestions();renderFlashcards();renderGlossary();renderScenarios();renderProgress();renderRepair();
+})();
+</script>
+
+</div>
+</article>
+</main>
+<footer><div class="wrap">© 2026 Sleep Pathways Guild · Independent educational-support resource · <a href="mailto:admin@sleeppathsguild.com">admin@sleeppathsguild.com</a></div></footer>
+</body>
+</html>
