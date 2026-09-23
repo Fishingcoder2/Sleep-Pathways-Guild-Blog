@@ -67,4 +67,98 @@ footer{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--muted)}
 .spg-hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.spg-btn{appearance:none;border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.spg-btn.primary{background:#d6ad45;color:#18222d}.spg-btn.light{background:#fff;color:#102f5c}.spg-btn.outline{background:#fff;border:1px solid #b9cbd9;color:#102f5c}.spg-btn.small{padding:8px 12px;font-size:.88rem}
 .spg-panel{background:#fff;border:1px solid #d8e2ef;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 7px 24px rgba(16,47,92,.05)}.spg-panel h2{color:#102f5c;margin-top:0;line-height:1.2}.spg-panel h3{color:#102f5c}.spg-kicker{font-size:.78rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#0b7f84}
 .spg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.spg-mini{background:#f5fafc;border:1px solid #d8e2ef;border-radius:14px;padding:14px}.spg-mini strong{display:block;color:#102f5c;margin-bottom:4px}
-.spg-callout{background:#eefafa;border-left:6px solid #0b7f84;border-radius:14px;padding:15px 17px;margin:16px 0}.spg-pearl{background:#fff8e7;border-left:6px solid #d6ad45;border-radius:14px;padding:15px 17px;margin:16px 0}
+.spg-callout{background:#eefafa;border-left:6px solid #0b7f84;border-radius:14px;padding:15px 17px;margin:16px 0}.spg-pearl{background:#fff8e7;border-left:6px solid #d6ad45;border-radius:14px;padding:15px 17px;margin:16px 0}spg-coach{background:linear-gradient(135deg,#fff8e7,#fffdf7);border:1px solid #e8d295;border-left:7px solid #d6ad45;border-radius:16px;padding:16px;margin:16px 0}.spg-coach strong{color:#102f5c}
+.spg-task-map details,.spg-reveal{border:1px solid #d8e2ef;border-radius:13px;background:#fbfdfe;margin:9px 0}.spg-task-map summary,.spg-reveal summary{cursor:pointer;padding:12px 14px;font-weight:900;color:#102f5c}.spg-task-map details[open],.spg-reveal[open]{background:#f3fbfb}.spg-task-map details>div,.spg-reveal>div{padding:0 14px 14px}
+.spg-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.spg-flow.five{grid-template-columns:repeat(5,1fr)}.spg-flow div{border-radius:15px;padding:15px;text-align:center;font-weight:900;border:1px solid #d8e2ef;background:#f5fafc;color:#174c86}.spg-flow small{display:block;font-weight:600;color:#5b6675;margin-top:4px}
+.spg-reason-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.spg-reason-grid div{border:1px solid #d8e2ef;border-radius:14px;padding:13px;background:linear-gradient(135deg,#f7fbff,#f4fcfb)}.spg-reason-grid strong{display:block;color:#0b7f84}.spg-reason-grid span{display:block;color:#425466}
+.spg-progress-wrap{position:sticky;top:74px;z-index:8;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border:1px solid #d8e2ef;border-radius:16px;padding:12px 14px;margin:18px 0;box-shadow:0 8px 22px rgba(16,47,92,.08)}.spg-progress-row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.spg-progress{height:10px;background:#e8eef3;border-radius:999px;overflow:hidden;margin-top:8px}.spg-progress>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#1f6fbf,#0b7f84,#d6ad45);transition:width .2s ease}
+.spg-question{border:1px solid #d8e2ef;border-radius:16px;background:#fbfdfe;padding:17px;margin:15px 0;scroll-margin-top:155px}.spg-question h3{margin:0 0 8px;color:#102f5c}.spg-tags{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0 12px}.spg-tag{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eaf3fa;color:#24506f;font-size:.75rem;font-weight:900}.spg-tag.acronym{background:#fff3cf;color:#72500d}
+.spg-options{display:grid;gap:8px;margin:12px 0}.spg-option{display:flex;gap:9px;align-items:flex-start;border:1px solid #cbd9e3;background:#fff;border-radius:12px;padding:11px;cursor:pointer}.spg-option:hover{border-color:#0b7f84;background:#f4fbfb}.spg-option input{margin-top:4px}.spg-feedback{display:none;margin-top:12px;border-radius:13px;padding:13px}.spg-feedback.show{display:block}.spg-feedback.good{background:#eaf7ef;border:1px solid #b8ddc5}.spg-feedback.review{background:#fff0ef;border:1px solid #e1bbb7}.spg-feedback strong{color:#102f5c}
+.spg-flash,.spg-term,.spg-scenario{border:1px solid #d8e2ef;border-radius:15px;background:#fbfdfe;margin:10px 0}.spg-flash summary,.spg-term summary,.spg-scenario summary{cursor:pointer;padding:14px;font-weight:900;color:#102f5c}.spg-flash>div,.spg-term>div,.spg-scenario>div{padding:0 14px 14px}.spg-scenario textarea{width:100%;min-height:95px;border:1px solid #c8d7e1;border-radius:12px;padding:11px;font:inherit;margin:8px 0 10px}
+.spg-repair{background:linear-gradient(135deg,#eef6ff,#f5fcfb);border:1px solid #cbdde7;border-radius:18px;padding:20px}.spg-repair-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.spg-repair-card{background:#fff;border:1px solid #d8e2ef;border-radius:13px;padding:13px}.spg-repair-card strong{display:block;color:#102f5c}.spg-repair-card small{display:block;color:#5b6675;margin-top:5px}.spg-resource{border-left:5px solid #0b7f84;padding:12px 14px;background:#f7fbfc;border-radius:0 12px 12px 0;margin:10px 0}.spg-resource strong{color:#102f5c}.spg-resource small{display:block;color:#5b6675;margin:4px 0 7px}.spg-ref-list p{padding-left:1.4em;text-indent:-1.4em}.spg-disclaimer{font-size:.92rem;color:#4b5968;background:#f8fafc;border-top:3px solid #102f5c;border-radius:14px;padding:17px;margin-top:22px}.spg-moonline{text-align:center;color:#0b7f84;font-weight:900;letter-spacing:.22rem;margin:20px 0}
+@media(max-width:860px){.spg-flow.five{grid-template-columns:1fr 1fr}.spg-flow.five div:last-child{grid-column:1/-1}}
+@media(max-width:720px){.spg-lesson-hero{padding:22px}.spg-hero-title{font-size:clamp(2.05rem,10vw,2.65rem)}.spg-flow,.spg-flow.five{grid-template-columns:1fr}.spg-flow.five div:last-child{grid-column:auto}.spg-panel{padding:17px}.spg-progress-wrap{top:66px}.spg-hero-actions{display:grid}.spg-btn{width:100%}}
+@media print{.spg-progress-wrap,.spg-hero-actions,.spg-btn{display:none!important}.spg-question,.spg-panel,.spg-flash,.spg-term,.spg-scenario{break-inside:avoid}.spg-lesson-hero{background:#fff!important;color:#000!important;border:2px solid #102f5c}.spg-hero-title,.spg-lesson-hero p{color:#000!important}.spg-hero-title{background:#fff!important;border-left:6px solid #d6ad45}}
+</style>
+
+<div class="spg-post">
+<header class="spg-lesson-hero">
+  <div class="spg-hero-brand">
+    <div class="spg-hero-orbit" aria-hidden="true">🌙</div>
+    <div><strong>Sleep Pathways Guild</strong><span>RPSGT Study Lesson • Interactive Review</span></div>
+  </div>
+  <div class="spg-badges">
+    <span class="spg-badge gold">DOMAIN 2</span>
+    <span class="spg-badge">27.3% OF CURRENT RPSGT BLUEPRINT</span>
+    <span class="spg-badge">50 STUDY POINTS</span>
+  </div>
+  <div class="spg-hero-title" role="heading" aria-level="2">Can You Trust the Signal?</div>
+  <p><strong>RPSGT Domain 2:</strong> Sleep Study Preparation and Performance.</p>
+  <p>Build technical reasoning for instrumentation, signal quality, artifact, HSAT, MSLT/MWT, troubleshooting, and blueprint-based repair.</p>
+  <div class="spg-hero-actions">
+    <a class="spg-btn primary" href="#lesson-start">Start the lesson</a>
+    <a class="spg-btn light" href="#practice">Jump to practice</a>
+    <button class="spg-btn light" type="button" id="spgShareLesson">Share lesson</button>
+    <button class="spg-btn light" type="button" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</header>
+
+<div class="spg-progress-wrap" aria-live="polite">
+  <div class="spg-progress-row">
+    <strong>Study progress: <span id="spgProgressText">0 / 50 completed</span></strong>
+    <button class="spg-btn outline small" type="button" id="spgReset">Reset lesson</button>
+  </div>
+  <div class="spg-progress" aria-hidden="true"><span id="spgProgressBar"></span></div>
+</div>
+
+
+<section class="spg-panel" id="lesson-start">
+  <div class="spg-kicker">Today’s lesson</div>
+  <h2>Can you trust the signal?</h2>
+  <p>Domain 2 is where the sleep technologist protects the technical integrity of the study. Knowing where an electrode goes is only the beginning. The technologist must decide whether a signal can be trusted, where a problem is coming from, how much of the recording is affected, what needs correction, and what must be documented.</p>
+  <div class="spg-grid">
+    <div class="spg-mini"><strong>Is it physiology or artifact?</strong>Compare timing, morphology, related channels, and the patient.</div>
+    <div class="spg-mini"><strong>Local or shared?</strong>One bad channel points one way; several channels failing together may reveal a shared reference or pathway.</div>
+    <div class="spg-mini"><strong>How much does it matter?</strong>Think about the extent of data loss, technical adequacy, and patient safety.</div>
+    <div class="spg-mini"><strong>What should happen next?</strong>Verify, troubleshoot, respond, document, and prevent recurrence.</div>
+  </div>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Don’t fix the screen before you find the source.”</div>
+</section>
+
+<section class="spg-panel">
+  <div class="spg-kicker">How to think like a sleep technologist</div>
+  <h2>The Guild 7-question reasoning check</h2>
+  <div class="spg-reason-grid">
+    <div><strong>WHO?</strong><span>Who or what is involved?</span></div>
+    <div><strong>WHAT?</strong><span>What actually changed?</span></div>
+    <div><strong>WHEN?</strong><span>When did it happen?</span></div>
+    <div><strong>WHERE?</strong><span>Where is the likely source?</span></div>
+    <div><strong>WHY?</strong><span>Why does this explanation fit?</span></div>
+    <div><strong>TO WHAT EXTENT?</strong><span>How much of the study is affected?</span></div>
+    <div><strong>HOW?</strong><span>How should you verify, respond, and document?</span></div>
+  </div>
+</section>
+
+<section class="spg-panel spg-task-map">
+  <div class="spg-kicker">Current BRPT blueprint</div>
+  <h2>Domain 2 — Sleep Study Preparation and Performance</h2>
+  <p><strong>Current blueprint weight: 27.3%.</strong> Use these codes as study flags when you miss an item.</p>
+  <details open><summary>Task A — Determine technical preparation (12–16 items)</summary><div>
+    <p><strong>D2-A1</strong> Equipment and supplies</p>
+    <p><strong>D2-A2</strong> Electrode and sensor placement, including modifications for patient need</p>
+    <p><strong>D2-A3</strong> Site preparation and application</p>
+    <p><strong>D2-A4</strong> Technical specifications and instrumentation</p>
+    <p><strong>D2-A5</strong> Montage selection</p>
+    <p><strong>D2-A6</strong> Infection control, including universal precautions, PPE, and equipment disinfection</p>
+  </div></details>
+  <details><summary>Task B — Perform procedures and follow practice guidelines (11–15 items)</summary><div>
+    <p><strong>D2-B1</strong> Adult PSG</p>
+    <p><strong>D2-B2</strong> Pediatric PSG</p>
+    <p><strong>D2-B3</strong> Multiple Sleep Latency Test (MSLT)</p>
+    <p><strong>D2-B4</strong> Maintenance of Wakefulness Test (MWT)</p>
+    <p><strong>D2-B5</strong> Home Sleep Apnea Testing (HSAT)</p>
+  </div></details>
+  <details><summary>Task C — Identify, respond, and document (12–16 items)</summary><div>
+    <p><strong>D2-C1</strong> Waveform variations</p>
+    <p><strong>D2-C2</strong> Artifacts</p>
+    <p><strong>D2-C3</stron
