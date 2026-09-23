@@ -43,12 +43,19 @@ POSTS = [
         "title": "Before the Lights Go Out: RPSGT Domain 1 Interactive Study Lesson",
         "summary": "A full interactive RPSGT Domain 1 lesson on clinical assessment, patient education, ESS, STOP-BANG, PAP support, 25 practice questions, flashcards, glossary terms, clinical scenarios, and blueprint-based weak-area tracking.",
     },
+    {
+        "id": "rpsgt-domain2-can-you-trust-the-signal-2026",
+        "path": "/2026/09/rpsgt-domain-2-can-you-trust-the-signal.html",
+        "date": "September 23, 2026",
+        "title": "Can You Trust the Signal? RPSGT Domain 2 Interactive Study Lesson",
+        "summary": "An interactive RPSGT Domain 2 lesson on instrumentation, signal quality, artifact recognition, HSAT, MSLT, MWT, troubleshooting, 25 original practice questions, flashcards, scenarios, and blueprint-based repair.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-09-18T13:09:00Z"
-LATEST_LASTMOD = "2026-09-18"
+LATEST_BUILD = "2026-09-23T07:15:00Z"
+LATEST_LASTMOD = "2026-09-23"
 
 
 def home_card(post):
