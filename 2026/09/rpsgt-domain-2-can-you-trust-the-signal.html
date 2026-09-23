@@ -161,4 +161,137 @@ footer{border-top:1px solid var(--line);padding:28px 0 44px;color:var(--muted)}
   <details><summary>Task C — Identify, respond, and document (12–16 items)</summary><div>
     <p><strong>D2-C1</strong> Waveform variations</p>
     <p><strong>D2-C2</strong> Artifacts</p>
-    <p><strong>D2-C3</stron
+    <p><strong>D2-C3</strong> Equipment malfunction</p>
+    <p><strong>D2-C4</strong> Recognition of cardiac, respiratory, movement, and capnography-related events</p>
+    <p><strong>D2-C5</strong> Settings, including filters, sensitivity, and gain</p>
+    <p><strong>D2-C6</strong> Channel and physiological calibrations</p>
+    <p><strong>D2-C7</strong> Impedance verification</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <div class="spg-kicker">Memory tool</div>
+  <h2>PREP → PLACE → PROVE → PERFORM → PROTECT</h2>
+  <div class="spg-flow five">
+    <div>PREP<br><small>Equipment • supplies • patient</small></div>
+    <div>PLACE<br><small>Electrodes • sensors</small></div>
+    <div>PROVE<br><small>Impedance • channels • calibration</small></div>
+    <div>PERFORM<br><small>Procedure • guideline</small></div>
+    <div>PROTECT<br><small>Patient • signal • documentation</small></div>
+  </div>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Prepare it. Place it. Prove it. Perform it. Protect it.”</div>
+</section>
+
+<section class="spg-panel">
+  <div class="spg-kicker">Signal foundations</div>
+  <h2>1. Signal quality starts before lights out</h2>
+  <p>A poor signal at 2:00 AM may have started during hookup. Site preparation, electrode adhesion, cable tension, sensor position, impedance, and channel configuration all affect what eventually reaches the screen.</p>
+  <div class="spg-pearl"><strong>Study pearl:</strong> A cleaner-looking waveform is not automatically a more accurate waveform. A filter does not repair a poorly attached electrode.</div>
+  <details class="spg-reveal"><summary>⭐ Where to study next</summary><div>
+    <p><strong>Mattice, Brooks, &amp; Lee-Chiong (2020).</strong></p>
+    <p>Chapter 34 — <em>Digital Polysomnography</em>, pp. 386–398.</p>
+    <p>Core digital PSG concepts: pp. 386–397.</p>
+    <p>Chapter 35 — <em>Recording the Biopotentials of Sleep</em>, pp. 399–424.</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <h2>2. Impedance, differential amplification, and shared references</h2>
+  <p>Impedance helps you think about the electrode-skin connection. Differential amplification means the displayed derivation depends on the relationship between two inputs. That is why a shared reference matters.</p>
+  <div class="spg-callout"><strong>Pattern:</strong> If F3-M2, C3-M2, and O1-M2 deteriorate together while M1-referenced channels remain usable, ask what the affected channels share: <strong>M2</strong>.</div>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Three bad channels may really be one bad connection wearing three different names.”</div>
+</section>
+
+<section class="spg-panel">
+  <h2>3. Common-mode rejection: think difference</h2>
+  <p>A differential amplifier is designed to amplify the difference between its inputs while rejecting signals that appear similarly at both inputs. Connect the concept to electrical interference, electrode balance, signal integrity, and troubleshooting.</p>
+  <div class="spg-pearl"><strong>Exam clue:</strong> Do not stop at the definition. Ask how the amplifier concept helps explain the tracing problem in front of you.</div>
+</section>
+
+<section class="spg-panel">
+  <h2>4. Filters change what you see</h2>
+  <div class="spg-grid">
+    <div class="spg-mini"><strong>Low-frequency filter</strong>Raising the low-frequency cutoff excessively can attenuate slower-frequency information.</div>
+    <div class="spg-mini"><strong>High-frequency filter</strong>Lowering the high-frequency cutoff excessively can attenuate faster-frequency information.</div>
+  </div>
+  <p>Before changing filters aggressively, determine whether the problem is physiologic, electrode related, movement related, environmental, or equipment related.</p>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Find the cause before you filter the consequence.”</div>
+  <details class="spg-reveal"><summary>⭐ Where to study next</summary><div>
+    <p><strong>Mattice et al. (2020).</strong> Chapter 34, pp. 386–398; filters, pp. 391–393.</p>
+    <p>Chapter 37 — <em>Polysomnographic Recording Procedures</em>, pp. 441–456; artifact recognition and troubleshooting, pp. 447–455.</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <h2>5. Sampling and Nyquist reasoning</h2>
+  <p>Digital PSG samples physiologic signals. A basic rule for board-style reasoning is that the sampling rate must be at least twice the highest frequency that needs to be represented.</p>
+  <div class="spg-callout"><strong>Example:</strong> Sampling rate 250 samples/second → Nyquist frequency 125 Hz.</div>
+  <div class="spg-pearl"><strong>Study pearl:</strong> Domain 2 can hide simple math inside an instrumentation question.</div>
+</section>
+
+<section class="spg-panel">
+  <h2>6. Channel calibration vs. physiologic calibration</h2>
+  <div class="spg-grid">
+    <div class="spg-mini"><strong>Channel calibration</strong>Think: Is the recording system responding appropriately?</div>
+    <div class="spg-mini"><strong>Physiologic calibration</strong>Think: Does expected patient-generated physiology appear in the expected channels?</div>
+  </div>
+  <p>Physiologic calibration maneuvers may involve eye movements, blinks, jaw movement, leg movement, or respiratory maneuvers according to the procedure.</p>
+  <details class="spg-reveal"><summary>⭐ Where to study next</summary><div>
+    <p><strong>Mattice et al. (2020).</strong> Chapter 35 — <em>Recording the Biopotentials of Sleep</em>, pp. 399–424.</p>
+    <p>Physiologic calibration: pp. 404–410.</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <div class="spg-kicker">Artifact reasoning</div>
+  <h2>7. Follow the rhythm of the artifact</h2>
+  <div class="spg-grid">
+    <div class="spg-mini"><strong>QRS-timed waveform</strong>Think ECG contamination.</div>
+    <div class="spg-mini"><strong>Breath-timed baseline shift</strong>Investigate respiratory-related artifact.</div>
+    <div class="spg-mini"><strong>After movement</strong>Think electrode movement, cable tension, or sensor displacement.</div>
+    <div class="spg-mini"><strong>Several channels, one reference</strong>Investigate the shared reference.</div>
+  </div>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Ask what the artifact is dancing with.”</div>
+  <details class="spg-reveal"><summary>⭐ Verified artifact pages</summary><div>
+    <p><strong>Mattice et al. (2020), Chapter 37.</strong></p>
+    <p>Artifact recognition: p. 447 • artifact correction: p. 448 • 50/60-Hz artifact: pp. 448–450 • ECG artifact: pp. 450–451 • slow-frequency artifact: pp. 451–452 • movement artifact: pp. 453–454 • respiratory artifact: p. 454 • oximetry artifact: pp. 454–455.</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <h2>8. Respiratory signals, oximetry, and capnography need context</h2>
+  <p>One channel should not tell the whole story when related signals are available. Ask whether airflow agrees with effort, whether oxygen saturation supports the apparent event, whether the cannula or belt moved, and whether the patient on video matches the tracing.</p>
+  <div class="spg-callout"><strong>Capnography example:</strong> If the CO₂ waveform disappears but airflow, effort, SpO₂, and the patient remain stable, investigate the sampling line, cannula, moisture, obstruction, connections, and equipment pathway.</div>
+  <div class="spg-pearl"><strong>Study pearl:</strong> A number on the screen is evidence. It is not automatically truth.</div>
+</section>
+
+<section class="spg-panel">
+  <div class="spg-kicker">Procedures</div>
+  <h2>9. Adult and pediatric PSG</h2>
+  <p>A technically sound PSG is more than hookup. It includes montage, signal quality, calibration, observation, troubleshooting, patient safety, and documentation throughout the study.</p>
+  <p>Pediatric PSG adds developmental, caregiver, tolerance, equipment, CO₂, safety, and recording considerations.</p>
+  <details class="spg-reveal"><summary>⭐ Where to study next: pediatric PSG</summary><div>
+    <p><strong>Mattice et al. (2020).</strong> Chapter 60 — <em>Pediatric Polysomnography</em>, pp. 706–715.</p>
+    <p>Pediatric laboratory environment: pp. 708–709 • capnography/CO₂: pp. 709–710 • electrode/sensor placement: pp. 710–711 • montage/equipment adjustments: pp. 712–713 • biocalibrations: pp. 714–715.</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <h2>10. MSLT and MWT ask different questions</h2>
+  <div class="spg-grid">
+    <div class="spg-mini"><strong>MSLT</strong>How readily does the patient fall asleep under standardized conditions?</div>
+    <div class="spg-mini"><strong>MWT</strong>How well can the patient maintain wakefulness under standardized conditions?</div>
+  </div>
+  <p>Current adult AASM protocol guidance addresses preparation, sleep before testing, medication/substance considerations, scheduling, test conditions, and documentation. Pediatric guidance adds age-specific considerations.</p>
+  <div class="spg-coach"><strong>Coach Bob:</strong> “Know what question the test is trying to answer.”</div>
+  <details class="spg-reveal"><summary>⭐ Where to study next</summary><div>
+    <p><strong>Mattice et al. (2020).</strong> Chapter 43 — <em>Multiple Sleep Latency Test and Maintenance of Wakefulness Test</em>, pp. 545–551; instructional review, pp. 545–550.</p>
+    <p><strong>Krahn et al. (2021).</strong> Adult MSLT/MWT protocol guidance, <em>Journal of Clinical Sleep Medicine, 17</em>(12), 2489–2498. https://doi.org/10.5664/jcsm.9620</p>
+    <p><strong>Krahn et al. (2022).</strong> Published erratum, <em>Journal of Clinical Sleep Medicine, 18</em>(8), 2089. https://doi.org/10.5664/jcsm.10100</p>
+    <p><strong>Maski et al. (2024).</strong> Pediatric MSLT/MWT protocol guidance, <em>Journal of Clinical Sleep Medicine, 20</em>(4), 631–641. https://doi.org/10.5664/jcsm.10974</p>
+  </div></details>
+</section>
+
+<section class="spg-panel">
+  <h2>11. HSAT is not “PSG at home”</h2>
+  <p>Many HSAT systems do not provide EEG-defined s
