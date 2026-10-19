@@ -50,12 +50,19 @@ POSTS = [
         "title": "Can You Trust the Signal? RPSGT Domain 2 Interactive Study Lesson",
         "summary": "An interactive RPSGT Domain 2 lesson on instrumentation, signal quality, artifact recognition, HSAT, MSLT, MWT, troubleshooting, 25 original practice questions, flashcards, scenarios, and blueprint-based repair.",
     },
+    {
+        "id": "rpsgt-recert-delay-2027",
+        "path": "/2026/10/rpsgt-recertification-processing-delay-january-2027.html",
+        "date": "October 19, 2026",
+        "title": "RPSGT Recertification Alert: BRPT Reports Processing Delays",
+        "summary": "BRPT reports significant processing delays for the January 1, 2027 RPSGT recertification cycle. More than 3,000 credential holders are due to renew; here is what to do now.",
+    },
 ]
 
 LATEST = POSTS[-1]
 LATEST_URL = "https://blog.sleeppathwaysguild.com" + LATEST["path"]
-LATEST_BUILD = "2026-09-23T07:15:00Z"
-LATEST_LASTMOD = "2026-09-23"
+LATEST_BUILD = "2026-10-19T12:19:00Z"
+LATEST_LASTMOD = "2026-10-19"
 
 
 def home_card(post):
