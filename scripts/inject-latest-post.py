@@ -111,27 +111,61 @@ def prepend_cards(path: str, card_factory) -> None:
 
 
 def update_feed() -> None:
+    """Add the approved latest editorial and normalize RSS 2.0 dates.
+
+    POSTS is the curated editorial list. Never auto-publish arbitrary HTML files.
+    """
+    from datetime import datetime, timezone
+    from email.utils import format_datetime, parsedate_to_datetime
+    import xml.etree.ElementTree as ET
+
     path = Path("feed.xml")
-    text = path.read_text(encoding="utf-8")
-    if LATEST_URL not in text:
-        item = (
-            "  <item>\n"
-            f"    <title>{LATEST['title']} | Sleep Pathways Guild</title>\n"
-            f"    <link>{LATEST_URL}</link>\n"
-            f"    <guid isPermaLink=\"true\">{LATEST_URL}</guid>\n"
-            f"    <pubDate>{LATEST_BUILD}</pubDate>\n"
-            f"    <description>{LATEST['summary']}</description>\n"
-            "  </item>\n"
-        )
-        marker = "  <item>\n"
-        if marker not in text:
-            raise RuntimeError("Could not find RSS item marker in feed.xml")
-        text = text.replace(marker, item + marker, 1)
+    tree = ET.parse(path)
+    root = tree.getroot()
+    if root.tag != "rss" or root.attrib.get("version") != "2.0":
+        raise RuntimeError("Expected RSS 2.0 feed")
+    channel = root.find("channel")
+    if channel is None:
+        raise RuntimeError("RSS channel missing")
 
-    import re
-    text = re.sub(r"<lastBuildDate>.*?</lastBuildDate>", f"<lastBuildDate>{LATEST_BUILD}</lastBuildDate>", text, count=1)
-    path.write_text(text, encoding="utf-8")
+    # Preserve existing feed entries, including editorial content outside POSTS.
+    items = channel.findall("item")
+    seen = set()
+    for item in items:
+        guid = (item.findtext("guid") or item.findtext("link") or "").strip()
+        if not guid or guid in seen:
+            raise RuntimeError(f"Missing or duplicate RSS GUID: {guid}")
+        seen.add(guid)
+        date_node = item.find("pubDate")
+        if date_node is not None and date_node.text:
+            raw = date_node.text.strip()
+            try:
+                parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+            except ValueError:
+                parsed = parsedate_to_datetime(raw)
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            date_node.text = format_datetime(parsed.astimezone(timezone.utc), usegmt=True)
 
+    published = datetime.fromisoformat(LATEST_BUILD.replace("Z", "+00:00"))
+    if LATEST_URL not in seen:
+        item = ET.Element("item")
+        ET.SubElement(item, "title").text = LATEST["title"] + " | Sleep Pathways Guild"
+        ET.SubElement(item, "link").text = LATEST_URL
+        ET.SubElement(item, "guid", {"isPermaLink": "true"}).text = LATEST_URL
+        ET.SubElement(item, "pubDate").text = format_datetime(published, usegmt=True)
+        ET.SubElement(item, "description").text = LATEST["summary"]
+        first = list(channel).index(items[0]) if items else len(channel)
+        channel.insert(first, item)
+
+    build = channel.find("lastBuildDate")
+    if build is None:
+        build = ET.SubElement(channel, "lastBuildDate")
+    # Build date reflects the newest *published* entry, not the deploy time.
+    all_dates = [parsedate_to_datetime(n.text) for n in channel.findall("item/pubDate") if n.text]
+    build.text = format_datetime(max(all_dates).astimezone(timezone.utc), usegmt=True)
+    ET.indent(tree, space="  ")
+    tree.write(path, encoding="utf-8", xml_declaration=True)
 
 def update_sitemap() -> None:
     path = Path("sitemap.xml")
