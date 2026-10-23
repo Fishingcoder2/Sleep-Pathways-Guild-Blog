@@ -34,6 +34,9 @@ jobs:
       - name: Add latest editorial to blog listings
         run: python scripts/inject-latest-post.py
 
+      - name: Validate generated RSS feed
+        run: python scripts/validate_feed.py
+
       - name: Enforce official Sleep Pathways Guild badge
         run: python scripts/fix_guild_badge.py
 
